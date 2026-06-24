@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>골든벨 퀴즈</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell" aria-live="polite">
+    <section id="home-screen" class="screen active" aria-labelledby="site-title">
+      <p class="eyebrow">행사·수업용 정적 퀴즈 사이트</p>
+      <h1 id="site-title">골든벨 퀴즈</h1>
+      <p class="intro-text">난이도를 선택하면 해당 문제들이 랜덤 순서로 출제됩니다.</p>
+
+      <div class="difficulty-grid" aria-label="난이도 선택">
+        <button class="primary-button difficulty-button" type="button" data-difficulty="easy">하 난이도 시작</button>
+        <button class="primary-button difficulty-button" type="button" data-difficulty="medium">중 난이도 시작</button>
+        <button class="primary-button difficulty-button" type="button" data-difficulty="hard">상 난이도 시작</button>
+      </div>
+
+      <div class="practice-card">
+        <div>
+          <strong>퀴즈연습</strong>
+          <p>ON이면 답안 선택 직후 정답 여부를 확인할 수 있습니다.</p>
+        </div>
+        <button id="practice-toggle" class="toggle-button" type="button" role="switch" aria-checked="false">
+          <span class="toggle-knob" aria-hidden="true"></span>
+          <span class="toggle-text">OFF</span>
+        </button>
+      </div>
+
+      <p id="start-guide" class="guide-text">원하는 난이도를 눌러 퀴즈를 시작하세요.</p>
+    </section>
+
+    <section id="quiz-screen" class="screen" aria-labelledby="quiz-question" hidden>
+      <div class="quiz-topbar">
+        <span id="difficulty-label" class="badge">난이도: -</span>
+        <span id="progress-label" class="badge">0 / 0</span>
+      </div>
+
+      <article class="question-card">
+        <h2 id="quiz-question">문제가 여기에 표시됩니다.</h2>
+        <div id="options-container" class="options-grid" aria-label="답안 선택"></div>
+        <p id="selected-answer" class="selected-answer" aria-live="polite"></p>
+        <p id="feedback-message" class="feedback-message" aria-live="polite" hidden></p>
+      </article>
+
+      <div class="action-row">
+        <button id="next-button" class="primary-button" type="button" disabled>다음 문제</button>
+        <button id="home-button" class="secondary-button" type="button">메인으로 돌아가기</button>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen" aria-labelledby="result-title" hidden>
+      <p class="eyebrow">퀴즈 종료</p>
+      <h2 id="result-title">결과</h2>
+      <div class="result-card">
+        <p>총 문제 수 <strong id="total-count">0</strong></p>
+        <p>맞힌 문제 수 <strong id="correct-count">0</strong></p>
+        <p>점수 <strong id="score-text">0점</strong></p>
+      </div>
+      <div class="action-row">
+        <button id="restart-button" class="primary-button" type="button">다시 시작하기</button>
+        <button id="result-home-button" class="secondary-button" type="button">메인으로 돌아가기</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
