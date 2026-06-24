@@ -650,8 +650,7 @@
     }
 
     function showResultEffect(isCorrect, correctAnswer) {
-      const correctGif = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eG50cHMxY2E4M3FiOWkxeDNxMDk2N2d6NWMxM29zeHk2eHo1OTk5dyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/PqfnfRcHzzFlGd3ENd/giphy.gif";
-      const wrongGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHhsOTJxZXZzd3J3emkyZzk2cWpzOWR0eW1kNzZhOTZ2aXh1Y2k0OSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/2cuI0vwb7w0wmDv7b0/giphy.gif";
+    
       messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
       messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
       feedbackImage.src = isCorrect ? correctGif : wrongGif;
