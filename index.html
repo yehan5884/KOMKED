@@ -39,7 +39,7 @@
     button { font: inherit; }
 
     .app {
-      width: min(1120px, 100%);
+      width: min(880px, 100%);
     }
 
     .screen {
@@ -48,7 +48,7 @@
       border: 2px solid rgba(217, 228, 245, 0.95);
       border-radius: clamp(22px, 4vw, 36px);
       box-shadow: var(--shadow);
-      padding: clamp(24px, 5vw, 62px);
+      padding: clamp(20px, 4vw, 42px);
     }
 
     .screen.active { display: block; }
@@ -72,21 +72,21 @@
 
     h1 {
       margin-bottom: 18px;
-      font-size: clamp(48px, 8vw, 92px);
+      font-size: clamp(38px, 6vw, 68px);
       line-height: 1.05;
       letter-spacing: -0.04em;
     }
 
     h2 {
       margin-bottom: 20px;
-      font-size: clamp(34px, 5vw, 64px);
+      font-size: clamp(28px, 4vw, 48px);
       line-height: 1.18;
       letter-spacing: -0.03em;
     }
 
     .lead, .setting-card p, .helper-text {
       color: var(--muted);
-      font-size: clamp(20px, 2.6vw, 30px);
+      font-size: clamp(17px, 2vw, 22px);
       line-height: 1.45;
     }
 
@@ -98,12 +98,12 @@
     }
 
     .button {
-      min-height: 72px;
+      min-height: 56px;
       border: 0;
       border-radius: 22px;
-      padding: 18px 30px;
+      padding: 14px 22px;
       cursor: pointer;
-      font-size: clamp(22px, 2.8vw, 32px);
+      font-size: clamp(18px, 2.2vw, 24px);
       font-weight: 900;
       transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
@@ -219,7 +219,7 @@
     }
 
     .question-card {
-      min-height: 310px;
+      min-height: 240px;
       padding: clamp(24px, 4vw, 44px);
       border: 2px solid var(--border);
       border-radius: 30px;
@@ -239,7 +239,7 @@
 
     .question-text {
       margin-bottom: 0;
-      font-size: clamp(34px, 5.2vw, 66px);
+      font-size: clamp(26px, 4vw, 44px);
       font-weight: 900;
       line-height: 1.24;
       word-break: keep-all;
@@ -253,7 +253,7 @@
     }
 
     .option-button {
-      min-height: 88px;
+      min-height: 68px;
       border: 3px solid var(--border);
       border-radius: 24px;
       padding: 18px 24px;
@@ -261,7 +261,7 @@
       color: var(--text);
       cursor: pointer;
       text-align: left;
-      font-size: clamp(24px, 3vw, 38px);
+      font-size: clamp(20px, 2.4vw, 28px);
       font-weight: 900;
     }
 
@@ -290,12 +290,12 @@
 
     .answer-input {
       width: 100%;
-      min-height: 74px;
+      min-height: 58px;
       margin-top: 28px;
       border: 3px solid var(--border);
       border-radius: 22px;
-      padding: 14px 20px;
-      font-size: clamp(24px, 3vw, 38px);
+      padding: 12px 16px;
+      font-size: clamp(20px, 2.4vw, 28px);
       font-weight: 900;
       color: var(--text);
       background: #fff;
@@ -309,7 +309,7 @@
     .answer-box, .message-box {
       min-height: 52px;
       margin-top: 24px;
-      font-size: clamp(24px, 3.2vw, 42px);
+      font-size: clamp(20px, 2.5vw, 30px);
       font-weight: 900;
       line-height: 1.35;
     }
@@ -347,6 +347,48 @@
       margin: 0;
     }
 
+    .feedback-image {
+      display: none;
+      width: min(180px, 46vw);
+      margin: 18px auto 0;
+    }
+
+    .feedback-image.visible {
+      display: block;
+    }
+
+    body.damage {
+      animation: damage-shake 0.42s ease;
+      background:
+        radial-gradient(circle at center, rgba(217, 45, 32, 0.28), transparent 34%),
+        linear-gradient(135deg, rgba(217, 45, 32, 0.16), rgba(255,255,255,0)),
+        var(--bg);
+    }
+
+    .confetti-piece {
+      position: fixed;
+      top: -14px;
+      z-index: 9999;
+      width: 10px;
+      height: 16px;
+      border-radius: 3px;
+      pointer-events: none;
+      animation: confetti-fall 1.8s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      to { transform: translate3d(var(--drift), 105vh, 0) rotate(720deg); opacity: 0.8; }
+    }
+
+    @keyframes damage-shake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-10px); }
+      30% { transform: translateX(8px); }
+      45% { transform: translateX(-7px); }
+      60% { transform: translateX(5px); }
+      75% { transform: translateX(-3px); }
+    }
+
     @media (max-width: 760px) {
       .setting-card, .home-actions, .quiz-actions, .result-actions {
         align-items: stretch;
@@ -366,18 +408,7 @@
     <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
       <p class="eyebrow">대한민국 상식 · 문화 · 역사 · 언어</p>
       <h1 id="mainTitle">골든벨 퀴즈</h1>
-      <p class="lead">한 화면에 한 문제씩 표시됩니다. 객관식과 OX는 보기 선택 후 정답 여부가 나오고, 주관식은 다음 버튼으로 정답을 공개합니다.</p>
-
-      <div class="setting-card">
-        <div>
-          <strong>랜덤 출제</strong>
-          <p>켜면 문제 순서를 무작위로 섞고, 끄면 입력된 순서대로 진행합니다.</p>
-        </div>
-        <button id="randomToggle" class="switch" type="button" role="switch" aria-checked="false">
-          <span class="switch-knob" aria-hidden="true"></span>
-          <span id="randomToggleText">OFF</span>
-        </button>
-      </div>
+      <p class="lead">한 화면에 한 문제씩 표시됩니다. 문제는 시작할 때마다 무작위로 섞이고, 답을 확인하면 정답/오답 효과가 바로 나타납니다.</p>
 
       <div class="home-actions">
         <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
@@ -400,6 +431,7 @@
         <input id="shortAnswerInput" class="answer-input" type="text" autocomplete="off" placeholder="답을 입력하세요" aria-label="주관식 답 입력" />
         <div id="answerBox" class="answer-box" aria-live="polite"></div>
         <div id="messageBox" class="message-box" aria-live="polite"></div>
+        <img id="feedbackImage" class="feedback-image" alt="정답 결과 이미지" />
       </article>
 
       <div class="quiz-actions">
@@ -425,7 +457,7 @@
 
   <script>
     const state = {
-      randomMode: false,
+      randomMode: true,
       questions: [],
       currentIndex: 0,
       selected: false,
@@ -435,8 +467,6 @@
     const homeScreen = document.getElementById("homeScreen");
     const quizScreen = document.getElementById("quizScreen");
     const resultScreen = document.getElementById("resultScreen");
-    const randomToggle = document.getElementById("randomToggle");
-    const randomToggleText = document.getElementById("randomToggleText");
     const startButton = document.getElementById("startButton");
     const dataCountText = document.getElementById("dataCountText");
     const counterText = document.getElementById("counterText");
@@ -447,6 +477,7 @@
     const shortAnswerInput = document.getElementById("shortAnswerInput");
     const answerBox = document.getElementById("answerBox");
     const messageBox = document.getElementById("messageBox");
+    const feedbackImage = document.getElementById("feedbackImage");
     const nextButton = document.getElementById("nextButton");
     const homeButton = document.getElementById("homeButton");
     const totalCount = document.getElementById("totalCount");
@@ -485,7 +516,7 @@
     }
 
     function startQuiz() {
-      state.questions = state.randomMode ? shuffleCopy(quizData) : [...quizData];
+      state.questions = shuffleCopy(quizData);
       state.currentIndex = 0;
       state.selected = false;
       state.shortAnswerVisible = false;
@@ -505,6 +536,10 @@
       answerBox.classList.remove("visible");
       messageBox.textContent = "";
       messageBox.className = "message-box";
+      feedbackImage.classList.remove("visible");
+      feedbackImage.removeAttribute("src");
+      document.body.classList.remove("damage");
+      clearConfetti();
       state.selected = false;
       state.shortAnswerVisible = false;
 
@@ -522,9 +557,9 @@
       if (current.type === "short") {
         shortAnswerInput.style.display = "block";
         shortAnswerInput.focus();
-        nextButton.disabled = false;
-        nextButton.textContent = "정답 공개";
-        messageBox.textContent = "답을 입력하거나 생각한 뒤 다음 버튼을 누르면 정답이 공개됩니다.";
+        nextButton.disabled = true;
+        nextButton.textContent = "정답 확인";
+        messageBox.textContent = "답을 입력한 뒤 정답 확인 버튼을 눌러주세요.";
         messageBox.classList.add("info");
         return;
       }
@@ -559,8 +594,7 @@
         }
       });
 
-      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
-      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+      showResultEffect(isCorrect, correctAnswer);
     }
 
     function handleNext() {
@@ -568,13 +602,18 @@
       if (!current) return;
 
       if (current.type === "short" && !state.shortAnswerVisible) {
-        state.shortAnswerVisible = true;
-        shortAnswerInput.disabled = true;
         const typedAnswer = shortAnswerInput.value.trim();
-        answerBox.textContent = typedAnswer ? `내 답: ${typedAnswer} / 정답: ${current.answer}` : `정답: ${current.answer}`;
+        if (!typedAnswer) {
+          shortAnswerInput.focus();
+          return;
+        }
+        const isCorrect = normalizeAnswer(typedAnswer) === normalizeAnswer(current.answer);
+        state.shortAnswerVisible = true;
+        state.selected = true;
+        shortAnswerInput.disabled = true;
+        answerBox.textContent = `내 답: ${typedAnswer} / 정답: ${current.answer}`;
         answerBox.classList.add("visible");
-        messageBox.textContent = "정답을 확인했다면 다음 버튼을 눌러주세요.";
-        messageBox.className = "message-box info";
+        showResultEffect(isCorrect, normalizeAnswer(current.answer));
         nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
         return;
       }
@@ -610,11 +649,38 @@
       showScreen(homeScreen);
     }
 
-    function toggleRandomMode() {
-      state.randomMode = !state.randomMode;
-      randomToggle.classList.toggle("on", state.randomMode);
-      randomToggle.setAttribute("aria-checked", String(state.randomMode));
-      randomToggleText.textContent = state.randomMode ? "ON" : "OFF";
+    function showResultEffect(isCorrect, correctAnswer) {
+      const correctGif = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eG50cHMxY2E4M3FiOWkxeDNxMDk2N2d6NWMxM29zeHk2eHo1OTk5dyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/PqfnfRcHzzFlGd3ENd/giphy.gif";
+      const wrongGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHhsOTJxZXZzd3J3emkyZzk2cWpzOWR0eW1kNzZhOTZ2aXh1Y2k0OSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/2cuI0vwb7w0wmDv7b0/giphy.gif";
+      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
+      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+      feedbackImage.src = isCorrect ? correctGif : wrongGif;
+      feedbackImage.classList.add("visible");
+      if (isCorrect) {
+        launchConfetti();
+      } else {
+        document.body.classList.add("damage");
+        window.setTimeout(() => document.body.classList.remove("damage"), 480);
+      }
+    }
+
+    function launchConfetti() {
+      clearConfetti();
+      const colors = ["#f5b301", "#2563eb", "#22c55e", "#ef4444", "#a855f7"];
+      for (let index = 0; index < 70; index += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[index % colors.length];
+        piece.style.setProperty("--drift", `${Math.random() * 220 - 110}px`);
+        piece.style.animationDelay = `${Math.random() * 0.35}s`;
+        document.body.appendChild(piece);
+        window.setTimeout(() => piece.remove(), 2300);
+      }
+    }
+
+    function clearConfetti() {
+      document.querySelectorAll(".confetti-piece").forEach((piece) => piece.remove());
     }
 
     function validateQuizData() {
@@ -625,9 +691,19 @@
       console.info(`OX 보기 오류: ${oxIssues.length}`);
     }
 
-    randomToggle.addEventListener("click", toggleRandomMode);
     startButton.addEventListener("click", startQuiz);
     nextButton.addEventListener("click", handleNext);
+    shortAnswerInput.addEventListener("input", () => {
+      const current = state.questions[state.currentIndex];
+      if (current?.type === "short" && !state.shortAnswerVisible) {
+        nextButton.disabled = shortAnswerInput.value.trim().length === 0;
+      }
+    });
+    shortAnswerInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !nextButton.disabled) {
+        handleNext();
+      }
+    });
     homeButton.addEventListener("click", returnHome);
     restartButton.addEventListener("click", startQuiz);
     resultHomeButton.addEventListener("click", returnHome);
