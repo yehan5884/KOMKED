@@ -3,71 +3,644 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>골든벨 퀴즈</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>대한민국 골든벨 퀴즈</title>
+  <style>
+    :root {
+      --bg: #f7f9ff;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --gold: #f5b301;
+      --soft-blue: #eaf2ff;
+      --border: #d9e4f5;
+      --success: #12823b;
+      --danger: #d92d20;
+      --shadow: 0 24px 70px rgba(23, 32, 51, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(245, 179, 1, 0.24), transparent 32%),
+        radial-gradient(circle at 80% 8%, rgba(37, 99, 235, 0.18), transparent 30%),
+        var(--bg);
+      display: grid;
+      place-items: center;
+      padding: clamp(14px, 3vw, 34px);
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(1120px, 100%);
+    }
+
+    .screen {
+      display: none;
+      background: rgba(255, 255, 255, 0.96);
+      border: 2px solid rgba(217, 228, 245, 0.95);
+      border-radius: clamp(22px, 4vw, 36px);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 5vw, 62px);
+    }
+
+    .screen.active { display: block; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      color: var(--primary-dark);
+      font-weight: 900;
+      font-size: clamp(18px, 2vw, 24px);
+    }
+
+    .eyebrow::before {
+      content: "★";
+      color: var(--gold);
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 18px;
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+    }
+
+    .lead, .setting-card p, .helper-text {
+      color: var(--muted);
+      font-size: clamp(20px, 2.6vw, 30px);
+      line-height: 1.45;
+    }
+
+    .home-actions, .quiz-actions, .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .button {
+      min-height: 72px;
+      border: 0;
+      border-radius: 22px;
+      padding: 18px 30px;
+      cursor: pointer;
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 900;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .secondary {
+      color: var(--primary-dark);
+      background: var(--soft-blue);
+      border: 2px solid #c7d8f6;
+    }
+
+    .setting-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 34px;
+      padding: 24px;
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      background: #fbfdff;
+    }
+
+    .setting-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: clamp(26px, 3vw, 38px);
+    }
+
+    .switch {
+      position: relative;
+      flex: 0 0 136px;
+      height: 66px;
+      border: 0;
+      border-radius: 999px;
+      background: #64748b;
+      color: #fff;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 900;
+      padding-left: 46px;
+    }
+
+    .switch.on {
+      background: var(--success);
+      padding-left: 0;
+      padding-right: 46px;
+    }
+
+    .switch-knob {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s ease;
+    }
+
+    .switch.on .switch-knob { transform: translateX(70px); }
+
+    .topline {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: #fff4cc;
+      color: #7a5200;
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 900;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7eef9;
+      border: 1px solid #d2def0;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold), var(--primary));
+      transition: width 0.25s ease;
+    }
+
+    .question-card {
+      min-height: 310px;
+      padding: clamp(24px, 4vw, 44px);
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+    }
+
+    .question-type {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--soft-blue);
+      color: var(--primary-dark);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 900;
+    }
+
+    .question-text {
+      margin-bottom: 0;
+      font-size: clamp(34px, 5.2vw, 66px);
+      font-weight: 900;
+      line-height: 1.24;
+      word-break: keep-all;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .option-button {
+      min-height: 88px;
+      border: 3px solid var(--border);
+      border-radius: 24px;
+      padding: 18px 24px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 900;
+    }
+
+    .option-button:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #f5f9ff;
+    }
+
+    .option-button.selected {
+      color: #fff;
+      border-color: #7c3aed;
+      background: #7c3aed;
+    }
+
+    .option-button.correct {
+      color: #fff;
+      border-color: var(--success);
+      background: var(--success);
+    }
+
+    .option-button.wrong {
+      color: #fff;
+      border-color: var(--danger);
+      background: var(--danger);
+    }
+
+    .answer-box, .message-box {
+      min-height: 52px;
+      margin-top: 24px;
+      font-size: clamp(24px, 3.2vw, 42px);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .answer-box {
+      display: none;
+      padding: 22px;
+      border-radius: 22px;
+      color: #7a5200;
+      background: #fff4cc;
+      border: 2px solid #f8d66d;
+    }
+
+    .answer-box.visible { display: block; }
+    .message-box.correct { color: var(--success); }
+    .message-box.wrong { color: var(--danger); }
+    .message-box.info { color: var(--muted); }
+
+    .result-card {
+      display: grid;
+      gap: 18px;
+      margin: 28px 0;
+      padding: 28px;
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      background: #fbfdff;
+      font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 900;
+    }
+
+    .result-card p {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 0;
+    }
+
+    @media (max-width: 760px) {
+      .setting-card, .home-actions, .quiz-actions, .result-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .switch { flex-basis: 66px; width: 136px; }
+      .topline { grid-template-columns: 1fr; }
+      .options { grid-template-columns: 1fr; }
+      .button, .option-button { width: 100%; }
+      .question-card { min-height: 260px; }
+    }
+  </style>
 </head>
 <body>
-  <main class="app-shell" aria-live="polite">
-    <section id="home-screen" class="screen active" aria-labelledby="site-title">
-      <p class="eyebrow">행사·수업용 정적 퀴즈 사이트</p>
-      <h1 id="site-title">골든벨 퀴즈</h1>
-      <p class="intro-text">난이도를 선택하면 해당 문제들이 랜덤 순서로 출제됩니다.</p>
+  <main class="app">
+    <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
+      <p class="eyebrow">대한민국 상식 · 문화 · 역사 · 언어</p>
+      <h1 id="mainTitle">골든벨 퀴즈</h1>
+      <p class="lead">한 화면에 한 문제씩 표시됩니다. 객관식과 OX는 보기 선택 후 정답 여부가 나오고, 주관식은 다음 버튼으로 정답을 공개합니다.</p>
 
-      <div class="difficulty-grid" aria-label="난이도 선택">
-        <button class="primary-button difficulty-button" type="button" data-difficulty="easy">하 난이도 시작</button>
-        <button class="primary-button difficulty-button" type="button" data-difficulty="medium">중 난이도 시작</button>
-        <button class="primary-button difficulty-button" type="button" data-difficulty="hard">상 난이도 시작</button>
-      </div>
-
-      <div class="practice-card">
+      <div class="setting-card">
         <div>
-          <strong>퀴즈연습</strong>
-          <p>ON이면 답안 선택 직후 정답 여부를 확인할 수 있습니다.</p>
+          <strong>랜덤 출제</strong>
+          <p>켜면 문제 순서를 무작위로 섞고, 끄면 입력된 순서대로 진행합니다.</p>
         </div>
-        <button id="practice-toggle" class="toggle-button" type="button" role="switch" aria-checked="false">
-          <span class="toggle-knob" aria-hidden="true"></span>
-          <span class="toggle-text">OFF</span>
+        <button id="randomToggle" class="switch" type="button" role="switch" aria-checked="false">
+          <span class="switch-knob" aria-hidden="true"></span>
+          <span id="randomToggleText">OFF</span>
         </button>
       </div>
 
-      <p id="start-guide" class="guide-text">원하는 난이도를 눌러 퀴즈를 시작하세요.</p>
+      <div class="home-actions">
+        <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
+      </div>
+      <p id="dataCountText" class="helper-text"></p>
     </section>
 
-    <section id="quiz-screen" class="screen" aria-labelledby="quiz-question" hidden>
-      <div class="quiz-topbar">
-        <span id="difficulty-label" class="badge">난이도: -</span>
-        <span id="progress-label" class="badge">0 / 0</span>
+    <section id="quizScreen" class="screen" aria-labelledby="questionText">
+      <div class="topline">
+        <span id="counterText" class="counter">1 / 1</span>
+        <div class="progress-track" aria-label="진행률">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
       </div>
 
       <article class="question-card">
-        <h2 id="quiz-question">문제가 여기에 표시됩니다.</h2>
-        <div id="options-container" class="options-grid" aria-label="답안 선택"></div>
-        <p id="selected-answer" class="selected-answer" aria-live="polite"></p>
-        <p id="feedback-message" class="feedback-message" aria-live="polite" hidden></p>
+        <span id="questionType" class="question-type">주관식</span>
+        <h2 id="questionText" class="question-text"></h2>
+        <div id="optionsContainer" class="options" aria-label="보기 선택"></div>
+        <div id="answerBox" class="answer-box" aria-live="polite"></div>
+        <div id="messageBox" class="message-box" aria-live="polite"></div>
       </article>
 
-      <div class="action-row">
-        <button id="next-button" class="primary-button" type="button" disabled>다음 문제</button>
-        <button id="home-button" class="secondary-button" type="button">메인으로 돌아가기</button>
+      <div class="quiz-actions">
+        <button id="nextButton" class="button primary" type="button">다음</button>
+        <button id="homeButton" class="button secondary" type="button">처음으로 돌아가기</button>
       </div>
     </section>
 
-    <section id="result-screen" class="screen" aria-labelledby="result-title" hidden>
-      <p class="eyebrow">퀴즈 종료</p>
-      <h2 id="result-title">결과</h2>
+    <section id="resultScreen" class="screen" aria-labelledby="resultTitle">
+      <p class="eyebrow">퀴즈 완료</p>
+      <h2 id="resultTitle">결과</h2>
       <div class="result-card">
-        <p>총 문제 수 <strong id="total-count">0</strong></p>
-        <p>맞힌 문제 수 <strong id="correct-count">0</strong></p>
-        <p>점수 <strong id="score-text">0점</strong></p>
+        <p><span>총 문제 수</span><strong id="totalCount">0</strong></p>
+        <p><span>진행한 문제 수</span><strong id="solvedCount">0</strong></p>
       </div>
-      <div class="action-row">
-        <button id="restart-button" class="primary-button" type="button">다시 시작하기</button>
-        <button id="result-home-button" class="secondary-button" type="button">메인으로 돌아가기</button>
+      <p class="lead">수고하셨습니다. 다시 시작하면 현재 설정에 따라 새 순서로 진행됩니다.</p>
+      <div class="result-actions">
+        <button id="restartButton" class="button primary" type="button">다시 시작하기</button>
+        <button id="resultHomeButton" class="button secondary" type="button">처음으로 돌아가기</button>
       </div>
     </section>
   </main>
 
-  <script src="questions.js"></script>
-  <script src="script.js"></script>
+  <script>
+    const state = {
+      randomMode: false,
+      questions: [],
+      currentIndex: 0,
+      selected: false,
+      shortAnswerVisible: false
+    };
+
+    const homeScreen = document.getElementById("homeScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const resultScreen = document.getElementById("resultScreen");
+    const randomToggle = document.getElementById("randomToggle");
+    const randomToggleText = document.getElementById("randomToggleText");
+    const startButton = document.getElementById("startButton");
+    const dataCountText = document.getElementById("dataCountText");
+    const counterText = document.getElementById("counterText");
+    const progressFill = document.getElementById("progressFill");
+    const questionType = document.getElementById("questionType");
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const answerBox = document.getElementById("answerBox");
+    const messageBox = document.getElementById("messageBox");
+    const nextButton = document.getElementById("nextButton");
+    const homeButton = document.getElementById("homeButton");
+    const totalCount = document.getElementById("totalCount");
+    const solvedCount = document.getElementById("solvedCount");
+    const restartButton = document.getElementById("restartButton");
+    const resultHomeButton = document.getElementById("resultHomeButton");
+
+    function showScreen(screen) {
+      [homeScreen, quizScreen, resultScreen].forEach((target) => {
+        target.classList.toggle("active", target === screen);
+      });
+    }
+
+    function shuffleCopy(items) {
+      const copied = [...items];
+      for (let index = copied.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [copied[index], copied[randomIndex]] = [copied[randomIndex], copied[index]];
+      }
+      return copied;
+    }
+
+    // 정답 비교 시 ①, 1. 같은 선택지 번호를 제거해 안정적으로 비교합니다.
+    function normalizeAnswer(value) {
+      return String(value)
+        .trim()
+        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, "")
+        .replace(/^\d+[.)]\s*/, "")
+        .trim();
+    }
+
+    function getQuestionTypeLabel(type) {
+      if (type === "multiple") return "객관식";
+      if (type === "ox") return "OX";
+      return "주관식";
+    }
+
+    function startQuiz() {
+      state.questions = state.randomMode ? shuffleCopy(quizData) : [...quizData];
+      state.currentIndex = 0;
+      state.selected = false;
+      state.shortAnswerVisible = false;
+      showScreen(quizScreen);
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const current = state.questions[state.currentIndex];
+
+      // 한 화면에는 현재 문제 하나만 표시하고, 이전 문제의 흔적은 모두 초기화합니다.
+      optionsContainer.replaceChildren();
+      answerBox.textContent = "";
+      answerBox.classList.remove("visible");
+      messageBox.textContent = "";
+      messageBox.className = "message-box";
+      state.selected = false;
+      state.shortAnswerVisible = false;
+
+      if (!current) {
+        renderResult();
+        return;
+      }
+
+      const progress = ((state.currentIndex + 1) / state.questions.length) * 100;
+      counterText.textContent = `${state.currentIndex + 1} / ${state.questions.length}`;
+      progressFill.style.width = `${progress}%`;
+      questionType.textContent = getQuestionTypeLabel(current.type);
+      questionText.textContent = current.question;
+
+      if (current.type === "short") {
+        nextButton.disabled = false;
+        nextButton.textContent = "정답 공개";
+        messageBox.textContent = "답을 생각한 뒤 다음 버튼을 누르면 정답이 공개됩니다.";
+        messageBox.classList.add("info");
+        return;
+      }
+
+      nextButton.disabled = true;
+      nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
+      current.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-button";
+        button.textContent = option;
+        button.addEventListener("click", () => selectOption(option, button));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectOption(option, selectedButton) {
+      if (state.selected) return;
+
+      const current = state.questions[state.currentIndex];
+      const selectedAnswer = normalizeAnswer(option);
+      const correctAnswer = normalizeAnswer(current.answer);
+      const isCorrect = selectedAnswer === correctAnswer;
+
+      state.selected = true;
+      nextButton.disabled = false;
+      selectedButton.classList.add(isCorrect ? "correct" : "wrong");
+      optionsContainer.querySelectorAll(".option-button").forEach((button) => {
+        button.disabled = true;
+        if (normalizeAnswer(button.textContent) === correctAnswer) {
+          button.classList.add("correct");
+        }
+      });
+
+      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
+      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+    }
+
+    function handleNext() {
+      const current = state.questions[state.currentIndex];
+      if (!current) return;
+
+      if (current.type === "short" && !state.shortAnswerVisible) {
+        state.shortAnswerVisible = true;
+        answerBox.textContent = `정답: ${current.answer}`;
+        answerBox.classList.add("visible");
+        messageBox.textContent = "정답을 확인했다면 다음 버튼을 눌러주세요.";
+        messageBox.className = "message-box info";
+        nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
+        return;
+      }
+
+      if ((current.type === "multiple" || current.type === "ox") && !state.selected) {
+        return;
+      }
+
+      if (isLastQuestion()) {
+        renderResult();
+        return;
+      }
+
+      state.currentIndex += 1;
+      renderQuestion();
+    }
+
+    function isLastQuestion() {
+      return state.currentIndex >= state.questions.length - 1;
+    }
+
+    function renderResult() {
+      totalCount.textContent = quizData.length;
+      solvedCount.textContent = state.questions.length;
+      showScreen(resultScreen);
+    }
+
+    function returnHome() {
+      state.questions = [];
+      state.currentIndex = 0;
+      state.selected = false;
+      state.shortAnswerVisible = false;
+      showScreen(homeScreen);
+    }
+
+    function toggleRandomMode() {
+      state.randomMode = !state.randomMode;
+      randomToggle.classList.toggle("on", state.randomMode);
+      randomToggle.setAttribute("aria-checked", String(state.randomMode));
+      randomToggleText.textContent = state.randomMode ? "ON" : "OFF";
+    }
+
+    function validateQuizData() {
+      const multipleIssues = quizData.filter((item) => item.type === "multiple" && item.options.length !== 4);
+      const oxIssues = quizData.filter((item) => item.type === "ox" && item.options.join(",") !== "O,X");
+      console.info(`총 문제 수: ${quizData.length}`);
+      console.info(`객관식 보기 개수 오류: ${multipleIssues.length}`);
+      console.info(`OX 보기 오류: ${oxIssues.length}`);
+    }
+
+    randomToggle.addEventListener("click", toggleRandomMode);
+    startButton.addEventListener("click", startQuiz);
+    nextButton.addEventListener("click", handleNext);
+    homeButton.addEventListener("click", returnHome);
+    restartButton.addEventListener("click", startQuiz);
+    resultHomeButton.addEventListener("click", returnHome);
+
+    /*
+      quizData 수정 방법
+      - question: 질문 원문
+      - answer: 정답 원문. 객관식 번호가 붙어도 normalizeAnswer 함수가 비교용 텍스트로 정리합니다.
+      - type: "short"(주관식), "multiple"(객관식), "ox"(O/X)
+      - options: 주관식은 [], 객관식은 보기 4개, OX는 ["O", "X"]
+    */
+    const quizData = [
+      {
+        question: "대한민국의 수도는 어디인가요?",
+        answer: "서울",
+        type: "short",
+        options: []
+      },
+      {
+        question: "흰 바탕에 태극 문양과 네 개의 괘가 그려진 대한민국의 국기는 무엇인가요?",
+        answer: "태극기",
+        type: "short",
+        options: []
+      },
+      {
+        question: "대한민국의 국화는 무엇인가요?",
+        answer: "무궁화",
+        type: "short",
+        options: []
+      },
+      {
+        question: "‘말 한마디에 천 냥 빚도 갚는다’는 ‘말을 잘하면 어려운 일도 해결할 수 있다’라는 뜻이다.",
+        answer: "O",
+        type: "ox",
+        options: ["O", "X"]
+      }
+    ];
+
+    dataCountText.textContent = `현재 등록된 문제는 ${quizData.length}개입니다.`;
+    validateQuizData();
+  </script>
 </body>
 </html>
