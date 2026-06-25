@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>대한민국 골든벨 퀴즈</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+    :root {
+      --bg: #dedad3;
+      --card: rgba(244, 242, 239, 0.94);
+      --text: #280b05;
+      --muted: #6e4432;
+      --primary: #805640;
+      --primary-dark: #401a12;
+      --gold: #9d7d69;
+      --soft-blue: rgba(199, 187, 177, 0.4);
+      --border: rgba(64, 26, 18, 0.22);
+      --success: #593225;
+      --danger: #401a12;
+      --surface-light: #f4f2ef;
+      --surface-dark: #593225;
+      --ink-dark: #280b05;
+      --shadow: 0 24px 70px rgba(64, 26, 18, 0.16);
     :root {
       --bg: #f7f9ff;
       --card: #ffffff;
@@ -25,6 +42,15 @@
     body {
       min-height: 100vh;
       margin: 0;
+      font-family: "Gowun Dodum", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(244, 242, 239, 0.7), transparent 26%),
+        radial-gradient(circle at 86% 18%, rgba(199, 187, 177, 0.5), transparent 24%),
+        radial-gradient(circle at 18% 88%, rgba(128, 86, 64, 0.14), transparent 28%),
+        linear-gradient(145deg, #f4f2ef 0%, #dedad3 40%, #c7bbb1 72%, #aa9b92 100%);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
       color: var(--text);
       background:
@@ -36,6 +62,28 @@
       padding: clamp(14px, 3vw, 34px);
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(115deg, transparent 0 58%, rgba(64, 26, 18, 0.06) 58% 62%, transparent 62%),
+        linear-gradient(24deg, transparent 0 66%, rgba(128, 86, 64, 0.08) 66% 68%, transparent 68%),
+        radial-gradient(circle at 82% 82%, rgba(244, 242, 239, 0.3), transparent 18%),
+        linear-gradient(90deg, rgba(244, 242, 239, 0.32), rgba(244, 242, 239, 0.04) 48%, rgba(64, 26, 18, 0.08));
+      pointer-events: none;
+    }
+
+    button, input { font: inherit; }
+
+    button, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
     button { font: inherit; }
 
     .app {
@@ -44,6 +92,9 @@
 
     .screen {
       display: none;
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.94), rgba(218, 215, 205, 0.9));
+      border: 2px solid var(--border);
+      backdrop-filter: blur(10px);
       background: rgba(255, 255, 255, 0.96);
       border: 2px solid rgba(217, 228, 245, 0.95);
       border-radius: clamp(22px, 4vw, 36px);
@@ -58,6 +109,7 @@
       align-items: center;
       gap: 8px;
       margin: 0 0 14px;
+      color: var(--gold);
       color: var(--primary-dark);
       font-weight: 900;
       font-size: clamp(18px, 2vw, 24px);
@@ -82,6 +134,53 @@
       font-size: clamp(28px, 4vw, 48px);
       line-height: 1.18;
       letter-spacing: -0.03em;
+    }
+
+    .camp-title {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.35;
+    }
+
+    .home-subtitle {
+      margin: -6px 0 24px;
+      color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+    }
+
+    .greeting-card {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(244, 242, 239, 0.64);
+    }
+
+    .greeting-card ol {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding-left: 1.4em;
+    }
+
+    .greeting-card li {
+      color: var(--text);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.65;
+    }
+
+    .greeting-card em {
+      color: var(--primary-dark);
+      font-style: normal;
+      font-weight: 900;
     }
 
     .lead, .setting-card p, .helper-text {
@@ -118,6 +217,15 @@
     }
 
     .primary {
+      color: var(--surface-light);
+      background: linear-gradient(135deg, #805640, #593225);
+      box-shadow: 0 16px 30px rgba(64, 26, 18, 0.18);
+    }
+
+    .secondary {
+      color: var(--text);
+      background: var(--soft-blue);
+      border: 2px solid var(--border);
       color: #fff;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       box-shadow: 0 16px 30px rgba(37, 99, 235, 0.28);
@@ -138,6 +246,7 @@
       padding: 24px;
       border: 2px solid var(--border);
       border-radius: 28px;
+      background: rgba(244, 242, 239, 0.62);
       background: #fbfdff;
     }
 
@@ -174,6 +283,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
+      background: rgba(244, 242, 239, 0.95);
       background: #fff;
       transition: transform 0.2s ease;
     }
@@ -195,6 +305,8 @@
       min-height: 56px;
       padding: 10px 20px;
       border-radius: 999px;
+      background: rgba(64, 26, 18, 0.08);
+      color: var(--gold);
       background: #fff4cc;
       color: #7a5200;
       font-size: clamp(20px, 2.4vw, 28px);
@@ -206,6 +318,8 @@
       height: 20px;
       overflow: hidden;
       border-radius: 999px;
+      background: rgba(64, 26, 18, 0.1);
+      border: 1px solid var(--border);
       background: #e7eef9;
       border: 1px solid #d2def0;
     }
@@ -214,6 +328,7 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
+      background: linear-gradient(90deg, #401a12, #805640, #c7bbb1);
       background: linear-gradient(90deg, var(--gold), var(--primary));
       transition: width 0.25s ease;
     }
@@ -223,6 +338,7 @@
       padding: clamp(24px, 4vw, 44px);
       border: 2px solid var(--border);
       border-radius: 30px;
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.76), rgba(199, 187, 177, 0.26));
       background: linear-gradient(180deg, #fff, #fbfdff);
     }
 
@@ -232,6 +348,7 @@
       padding: 8px 16px;
       border-radius: 999px;
       background: var(--soft-blue);
+      color: var(--gold);
       color: var(--primary-dark);
       font-size: clamp(18px, 2vw, 24px);
       font-weight: 900;
@@ -243,6 +360,7 @@
       font-weight: 900;
       line-height: 1.24;
       word-break: keep-all;
+      overflow-wrap: anywhere;
     }
 
     .options {
@@ -257,6 +375,8 @@
       border: 3px solid var(--border);
       border-radius: 24px;
       padding: 18px 24px;
+      background: var(--surface-light);
+      color: var(--ink-dark);
       background: #fff;
       color: var(--text);
       cursor: pointer;
@@ -267,6 +387,17 @@
 
     .option-button:hover:not(:disabled) {
       border-color: var(--primary);
+      background: #f0eee6;
+    }
+
+    .option-button.selected {
+      color: var(--surface-light);
+      border-color: var(--primary-dark);
+      background: var(--primary-dark);
+    }
+
+    .option-button.correct {
+      color: var(--surface-light);
       background: #f5f9ff;
     }
 
@@ -283,6 +414,7 @@
     }
 
     .option-button.wrong {
+      color: var(--surface-light);
       color: #fff;
       border-color: var(--danger);
       background: var(--danger);
@@ -297,6 +429,8 @@
       padding: 12px 16px;
       font-size: clamp(20px, 2.4vw, 28px);
       font-weight: 900;
+      color: var(--ink-dark);
+      background: var(--surface-light);
       color: var(--text);
       background: #fff;
     }
@@ -318,6 +452,9 @@
       display: none;
       padding: 22px;
       border-radius: 22px;
+      color: var(--gold);
+      background: rgba(64, 26, 18, 0.08);
+      border: 2px solid var(--border);
       color: #7a5200;
       background: #fff4cc;
       border: 2px solid #f8d66d;
@@ -335,6 +472,7 @@
       padding: 28px;
       border: 2px solid var(--border);
       border-radius: 28px;
+      background: rgba(244, 242, 239, 0.62);
       background: #fbfdff;
       font-size: clamp(26px, 3.2vw, 42px);
       font-weight: 900;
@@ -347,6 +485,43 @@
       margin: 0;
     }
 
+    .answer-sheet {
+      max-height: min(52vh, 440px);
+      overflow: auto;
+      margin-top: 22px;
+      padding: 18px;
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      background: rgba(244, 242, 239, 0.62);
+    }
+
+    .answer-sheet h2 {
+      margin-bottom: 8px;
+      font-size: clamp(24px, 3vw, 34px);
+    }
+
+    .answer-sheet p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .answer-sheet ol {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    .answer-sheet li {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(244, 242, 239, 0.62);
+      line-height: 1.45;
+      font-size: 17px;
+    }
+
+    .answer-sheet strong {
+      color: var(--gold);
     .feedback-image {
       display: none;
       width: min(180px, 46vw);
@@ -389,12 +564,116 @@
       75% { transform: translateX(-3px); }
     }
 
+    .result-review {
+      display: grid;
+      gap: 12px;
+      max-height: min(52vh, 520px);
+      overflow: auto;
+      margin-top: 24px;
+      padding-right: 4px;
+    }
+
+    .review-item {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(244, 242, 239, 0.62);
+    }
+
+    .review-item.correct {
+      border-color: rgba(115, 214, 161, 0.74);
+    }
+
+    .review-item.wrong {
+      border-color: rgba(255, 127, 115, 0.74);
+    }
+
+    .review-item p {
+      margin: 0 0 8px;
+      line-height: 1.45;
+    }
+
+    .review-badge {
+      display: inline-flex;
+      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(64, 26, 18, 0.1);
+    }
+
+    @media (hover: none) {
+      .button:hover:not(:disabled),
+      .option-button:hover:not(:disabled) {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        display: block;
+        padding: 10px;
+      }
+
+      .app {
+        width: 100%;
+      }
+
+      .screen {
+        min-height: calc(100dvh - 20px);
+        border-radius: 22px;
+        padding: 18px;
+      }
+
     @media (max-width: 760px) {
       .setting-card, .home-actions, .quiz-actions, .result-actions {
         align-items: stretch;
         flex-direction: column;
       }
 
+      .home-actions, .quiz-actions, .result-actions {
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      h1 {
+        font-size: clamp(34px, 12vw, 52px);
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        font-size: clamp(25px, 8vw, 36px);
+      }
+
+      .camp-title { font-size: clamp(22px, 7vw, 32px); }
+      .home-subtitle { font-size: 16px; margin-bottom: 16px; }
+      .greeting-card { margin-top: 16px; padding: 16px; border-radius: 18px; gap: 10px; }
+      .greeting-card li, .lead, .helper-text {
+        font-size: 16px;
+      }
+
+      .switch { flex-basis: 66px; width: 136px; }
+      .topline { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+      .counter { min-height: 42px; font-size: 18px; }
+      .progress-track { height: 14px; }
+      .question-card { min-height: auto; padding: 18px; border-radius: 22px; }
+      .question-type { font-size: 16px; margin-bottom: 10px; }
+      .question-text { font-size: clamp(24px, 7.2vw, 34px); line-height: 1.28; }
+      .options { grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
+      .button, .option-button { width: 100%; }
+      .button { min-height: 52px; border-radius: 18px; font-size: 18px; }
+      .option-button { min-height: 58px; border-radius: 18px; padding: 14px 16px; font-size: 20px; }
+      .answer-input { min-height: 54px; margin-top: 18px; border-radius: 18px; font-size: 20px; }
+      .answer-box, .message-box { margin-top: 16px; font-size: 20px; }
+      .answer-sheet { max-height: 54dvh; padding: 14px; border-radius: 18px; }
+      .answer-sheet li { font-size: 15px; padding: 9px 10px; }
+    }
+
+    @media (max-width: 380px) {
+      .screen { padding: 14px; }
+      .question-text { font-size: 23px; }
+      .option-button, .answer-input, .answer-box, .message-box { font-size: 18px; }
       .switch { flex-basis: 66px; width: 136px; }
       .topline { grid-template-columns: 1fr; }
       .options { grid-template-columns: 1fr; }
@@ -406,6 +685,27 @@
 <body>
   <main class="app">
     <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
+      <p class="camp-title">★ 대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선</p>
+      <h1 id="mainTitle">콤케드 킹덤골든벨</h1>
+      <p class="home-subtitle">2026 KOMKED SUMMER MK CAMP</p>
+      <div class="greeting-card" aria-label="골든벨 인사말">
+        <ol>
+          <li>올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 <em>제1회 킹덤골든벨</em>이 진행됩니다.</li>
+          <li>이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 <em>기출문제 100선</em>입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</li>
+          <li>한 화면에 한 문제씩 표시됩니다.</li>
+        </ol>
+      </div>
+
+      <div class="home-actions">
+        <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
+        <button id="answerSheetButton" class="button secondary" type="button" aria-expanded="false" aria-controls="answerSheetPanel">답안지</button>
+      </div>
+      <p id="dataCountText" class="helper-text"></p>
+      <section id="answerSheetPanel" class="answer-sheet" aria-label="전체 퀴즈 답안지" hidden>
+        <h2>답안지</h2>
+        <p>모든 퀴즈의 정답을 한눈에 확인할 수 있습니다.</p>
+        <ol id="answerSheetList"></ol>
+      </section>
       <p class="eyebrow">대한민국 상식 · 문화 · 역사 · 언어</p>
       <h1 id="mainTitle">골든벨 퀴즈</h1>
       <p class="lead">★ 2026 MK SUMMER CAMP (보통 크게)
@@ -451,6 +751,11 @@
       <h2 id="resultTitle">결과</h2>
       <div class="result-card">
         <p><span>총 문제 수</span><strong id="totalCount">0</strong></p>
+        <p><span>맞힌 문제 수</span><strong id="correctCount">0</strong></p>
+        <p><span>틀린 문제 수</span><strong id="wrongCount">0</strong></p>
+      </div>
+      <p class="lead">아래에서 모든 문제의 내 답과 정답을 한 번에 확인할 수 있습니다.</p>
+      <div id="resultReview" class="result-review" aria-label="전체 문제 정답 및 오답 확인"></div>
         <p><span>진행한 문제 수</span><strong id="solvedCount">0</strong></p>
       </div>
       <p class="lead">수고하셨습니다. 다시 시작하면 현재 설정에 따라 새 순서로 진행됩니다.</p>
@@ -463,6 +768,11 @@
 
   <script>
     const state = {
+      questions: [],
+      currentIndex: 0,
+      selected: false,
+      shortAnswerVisible: false,
+      answers: []
       randomMode: true,
       questions: [],
       currentIndex: 0,
@@ -474,6 +784,9 @@
     const quizScreen = document.getElementById("quizScreen");
     const resultScreen = document.getElementById("resultScreen");
     const startButton = document.getElementById("startButton");
+    const answerSheetButton = document.getElementById("answerSheetButton");
+    const answerSheetPanel = document.getElementById("answerSheetPanel");
+    const answerSheetList = document.getElementById("answerSheetList");
     const dataCountText = document.getElementById("dataCountText");
     const counterText = document.getElementById("counterText");
     const progressFill = document.getElementById("progressFill");
@@ -483,6 +796,12 @@
     const shortAnswerInput = document.getElementById("shortAnswerInput");
     const answerBox = document.getElementById("answerBox");
     const messageBox = document.getElementById("messageBox");
+    const nextButton = document.getElementById("nextButton");
+    const homeButton = document.getElementById("homeButton");
+    const totalCount = document.getElementById("totalCount");
+    const correctCount = document.getElementById("correctCount");
+    const wrongCount = document.getElementById("wrongCount");
+    const resultReview = document.getElementById("resultReview");
     const feedbackImage = document.getElementById("feedbackImage");
     const nextButton = document.getElementById("nextButton");
     const homeButton = document.getElementById("homeButton");
@@ -526,6 +845,7 @@
       state.currentIndex = 0;
       state.selected = false;
       state.shortAnswerVisible = false;
+      state.answers = [];
       showScreen(quizScreen);
       renderQuestion();
     }
@@ -600,6 +920,7 @@
         }
       });
 
+      recordAnswer(current, option, correctAnswer, isCorrect);
       showResultEffect(isCorrect, correctAnswer);
     }
 
@@ -619,6 +940,7 @@
         shortAnswerInput.disabled = true;
         answerBox.textContent = `내 답: ${typedAnswer} / 정답: ${current.answer}`;
         answerBox.classList.add("visible");
+        recordAnswer(current, typedAnswer, normalizeAnswer(current.answer), isCorrect);
         showResultEffect(isCorrect, normalizeAnswer(current.answer));
         nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
         return;
@@ -642,6 +964,47 @@
     }
 
     function renderResult() {
+      const correctTotal = state.answers.filter((answer) => answer.isCorrect).length;
+      const wrongTotal = state.answers.length - correctTotal;
+      totalCount.textContent = quizData.length;
+      correctCount.textContent = correctTotal;
+      wrongCount.textContent = wrongTotal;
+      renderResultReview();
+      showScreen(resultScreen);
+    }
+
+    function recordAnswer(question, userAnswer, correctAnswer, isCorrect) {
+      state.answers[state.currentIndex] = {
+        question: question.question,
+        type: question.type,
+        userAnswer: normalizeAnswer(userAnswer),
+        correctAnswer,
+        isCorrect
+      };
+    }
+
+    function renderResultReview() {
+      const reviewItems = state.questions.map((question, index) => {
+        const answer = state.answers[index] || {
+          question: question.question,
+          type: question.type,
+          userAnswer: "응답 없음",
+          correctAnswer: normalizeAnswer(question.answer),
+          isCorrect: false
+        };
+        const item = document.createElement("article");
+        item.className = `review-item ${answer.isCorrect ? "correct" : "wrong"}`;
+        item.innerHTML = `
+          <span class="review-badge">${answer.isCorrect ? "정답" : "오답"} · ${getQuestionTypeLabel(answer.type)}</span>
+          <p><strong>Q${index + 1}.</strong> ${escapeHtml(answer.question)}</p>
+          <p>내 답: <strong>${escapeHtml(answer.userAnswer)}</strong></p>
+          <p>정답: <strong>${escapeHtml(answer.correctAnswer)}</strong></p>
+        `;
+        return item;
+      });
+      resultReview.replaceChildren(...reviewItems);
+    }
+
       totalCount.textContent = quizData.length;
       solvedCount.textContent = state.questions.length;
       showScreen(resultScreen);
@@ -652,10 +1015,13 @@
       state.currentIndex = 0;
       state.selected = false;
       state.shortAnswerVisible = false;
+      state.answers = [];
       showScreen(homeScreen);
     }
 
     function showResultEffect(isCorrect, correctAnswer) {
+      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
+      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
     
       messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
       messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
@@ -671,6 +1037,8 @@
 
     function launchConfetti() {
       clearConfetti();
+      const colors = ["#9b847b", "#dad7cd", "#805640", "#c7bbb1", "#401a12", "#b79c89"];
+      for (let index = 0; index < 150; index += 1) {
       const colors = ["#f5b301", "#2563eb", "#22c55e", "#ef4444", "#a855f7"];
       for (let index = 0; index < 70; index += 1) {
         const piece = document.createElement("span");
@@ -688,6 +1056,32 @@
       document.querySelectorAll(".confetti-piece").forEach((piece) => piece.remove());
     }
 
+    function renderAnswerSheet() {
+      const items = quizData.map((item, index) => {
+        const li = document.createElement("li");
+        const typeLabel = getQuestionTypeLabel(item.type);
+        li.innerHTML = `<span>${index + 1}. [${typeLabel}] ${escapeHtml(item.question)}</span><br><strong>정답: ${escapeHtml(normalizeAnswer(item.answer))}</strong>`;
+        return li;
+      });
+      answerSheetList.replaceChildren(...items);
+    }
+
+    function toggleAnswerSheet() {
+      const willOpen = answerSheetPanel.hidden;
+      answerSheetPanel.hidden = !willOpen;
+      answerSheetButton.setAttribute("aria-expanded", String(willOpen));
+      answerSheetButton.textContent = willOpen ? "답안지 닫기" : "답안지";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     function validateQuizData() {
       const multipleIssues = quizData.filter((item) => item.type === "multiple" && item.options.length !== 4);
       const oxIssues = quizData.filter((item) => item.type === "ox" && item.options.join(",") !== "O,X");
@@ -697,6 +1091,7 @@
     }
 
     startButton.addEventListener("click", startQuiz);
+    answerSheetButton.addEventListener("click", toggleAnswerSheet);
     nextButton.addEventListener("click", handleNext);
     shortAnswerInput.addEventListener("input", () => {
       const current = state.questions[state.currentIndex];
@@ -1409,6 +1804,7 @@
 ];
 
     dataCountText.textContent = `현재 등록된 문제는 ${quizData.length}개입니다.`;
+    renderAnswerSheet();
     validateQuizData();
   </script>
 </body>
