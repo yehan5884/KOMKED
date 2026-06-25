@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대한민국 골든벨 퀴즈</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+    :root {
+      --bg: #dedad3;
+      --card: rgba(244, 242, 239, 0.94);
+      --text: #280b05;
+      --muted: #6e4432;
+      --primary: #805640;
+      --primary-dark: #401a12;
+      --gold: #9d7d69;
+      --soft-blue: rgba(199, 187, 177, 0.4);
+      --border: rgba(64, 26, 18, 0.22);
+      --success: #593225;
+      --danger: #401a12;
+      --surface-light: #f4f2ef;
+      --surface-dark: #593225;
+      --ink-dark: #280b05;
+      --shadow: 0 24px 70px rgba(64, 26, 18, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: "Gowun Dodum", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(244, 242, 239, 0.7), transparent 26%),
+        radial-gradient(circle at 86% 18%, rgba(199, 187, 177, 0.5), transparent 24%),
+        radial-gradient(circle at 18% 88%, rgba(128, 86, 64, 0.14), transparent 28%),
+        linear-gradient(145deg, #f4f2ef 0%, #dedad3 40%, #c7bbb1 72%, #aa9b92 100%);
+      display: grid;
+      place-items: center;
+      padding: clamp(14px, 3vw, 34px);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(115deg, transparent 0 58%, rgba(64, 26, 18, 0.06) 58% 62%, transparent 62%),
+        linear-gradient(24deg, transparent 0 66%, rgba(128, 86, 64, 0.08) 66% 68%, transparent 68%),
+        radial-gradient(circle at 82% 82%, rgba(244, 242, 239, 0.3), transparent 18%),
+        linear-gradient(90deg, rgba(244, 242, 239, 0.32), rgba(244, 242, 239, 0.04) 48%, rgba(64, 26, 18, 0.08));
+      pointer-events: none;
+    }
+
+    button, input { font: inherit; }
+
+    button, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: min(880px, 100%);
+    }
+
+    .screen {
+      display: none;
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.94), rgba(218, 215, 205, 0.9));
+      border: 2px solid var(--border);
+      backdrop-filter: blur(10px);
+      border-radius: clamp(22px, 4vw, 36px);
+      box-shadow: var(--shadow);
+      padding: clamp(20px, 4vw, 42px);
+    }
+
+    .screen.active { display: block; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      color: var(--gold);
+      font-weight: 900;
+      font-size: clamp(18px, 2vw, 24px);
+    }
+
+    .eyebrow::before {
+      content: "★";
+      color: var(--gold);
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 18px;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+    }
+
+    .camp-title {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.35;
+    }
+
+    .home-subtitle {
+      margin: -6px 0 24px;
+      color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+    }
+
+    .greeting-card {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(244, 242, 239, 0.64);
+    }
+
+    .greeting-card ol {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding-left: 1.4em;
+    }
+
+    .greeting-card li {
+      color: var(--text);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.65;
+    }
+
+    .greeting-card em {
+      color: var(--primary-dark);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .lead, .helper-text {
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.45;
+    }
+
+    .home-actions, .quiz-actions, .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .button {
+      min-height: 56px;
+      border: 0;
+      border-radius: 22px;
+      padding: 14px 22px;
+      cursor: pointer;
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 900;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .primary {
+      color: var(--surface-light);
+      background: linear-gradient(135deg, #805640, #593225);
+      box-shadow: 0 16px 30px rgba(64, 26, 18, 0.18);
+    }
+
+    .secondary {
+      color: var(--text);
+      background: var(--soft-blue);
+      border: 2px solid var(--border);
+    }
+
+
+    .topline {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(64, 26, 18, 0.08);
+      color: var(--gold);
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 900;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(64, 26, 18, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #401a12, #805640, #c7bbb1);
+      transition: width 0.25s ease;
+    }
+
+    .question-card {
+      min-height: 240px;
+      padding: clamp(24px, 4vw, 44px);
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.76), rgba(199, 187, 177, 0.26));
+    }
+
+    .question-type {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--soft-blue);
+      color: var(--gold);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 900;
+    }
+
+    .question-text {
+      margin-bottom: 0;
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 900;
+      line-height: 1.24;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .option-button {
+      min-height: 68px;
+      border: 3px solid var(--border);
+      border-radius: 24px;
+      padding: 18px 24px;
+      background: var(--surface-light);
+      color: var(--ink-dark);
+      cursor: pointer;
+      text-align: left;
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 900;
+    }
+
+    .option-button:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #f0eee6;
+    }
+
+    .option-button.selected {
+      color: var(--surface-light);
+      border-color: var(--primary-dark);
+      background: var(--primary-dark);
+    }
+
+    .option-button.correct {
+      color: var(--surface-light);
+      border-color: var(--success);
+      background: var(--success);
+    }
+
+    .option-button.wrong {
+      color: var(--surface-light);
+      border-color: var(--danger);
+      background: var(--danger);
+    }
+
+    .answer-input {
+      width: 100%;
+      min-height: 58px;
+      margin-top: 28px;
+      border: 3px solid var(--border);
+      border-radius: 22px;
+      padding: 12px 16px;
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 900;
+      color: var(--ink-dark);
+      background: var(--surface-light);
+    }
+
+    .answer-input:focus {
+      outline: 4px solid rgba(37, 99, 235, 0.18);
+      border-color: var(--primary);
+    }
+
+    .answer-box, .message-box {
+      min-height: 52px;
+      margin-top: 24px;
+      font-size: clamp(20px, 2.5vw, 30px);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .answer-box {
+      display: none;
+      padding: 22px;
+      border-radius: 22px;
+      color: var(--gold);
+      background: rgba(64, 26, 18, 0.08);
+      border: 2px solid var(--border);
+    }
+
+    .answer-box.visible { display: block; }
+    .message-box.correct { color: var(--success); }
+    .message-box.wrong { color: var(--danger); }
+    .message-box.info { color: var(--muted); }
+
+    .result-card {
+      display: grid;
+      gap: 18px;
+      margin: 28px 0;
+      padding: 28px;
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      background: rgba(244, 242, 239, 0.62);
+      font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 900;
+    }
+
+    .result-card p {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 0;
+    }
+
+    .answer-sheet {
+      max-height: min(52vh, 440px);
+      overflow: auto;
+      margin-top: 22px;
+      padding: 18px;
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      background: rgba(244, 242, 239, 0.62);
+    }
+
+    .answer-sheet h2 {
+      margin-bottom: 8px;
+      font-size: clamp(24px, 3vw, 34px);
+    }
+
+    .answer-sheet p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .answer-sheet ol {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    .answer-sheet li {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(244, 242, 239, 0.62);
+      line-height: 1.45;
+      font-size: 17px;
+    }
+
+    .answer-sheet strong {
+      color: var(--gold);
+    }
+
+    body.damage {
+      animation: damage-shake 0.42s ease;
+      background:
+        radial-gradient(circle at center, rgba(217, 45, 32, 0.28), transparent 34%),
+        linear-gradient(135deg, rgba(217, 45, 32, 0.16), rgba(255,255,255,0)),
+        var(--bg);
+    }
+
+    .confetti-piece {
+      position: fixed;
+      top: -14px;
+      z-index: 9999;
+      width: 10px;
+      height: 16px;
+      border-radius: 3px;
+      pointer-events: none;
+      animation: confetti-fall 1.8s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      to { transform: translate3d(var(--drift), 105vh, 0) rotate(720deg); opacity: 0.8; }
+    }
+
+    @keyframes damage-shake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-10px); }
+      30% { transform: translateX(8px); }
+      45% { transform: translateX(-7px); }
+      60% { transform: translateX(5px); }
+      75% { transform: translateX(-3px); }
+    }
+
+    .result-review {
+      display: grid;
+      gap: 12px;
+      max-height: min(52vh, 520px);
+      overflow: auto;
+      margin-top: 24px;
+      padding-right: 4px;
+    }
+
+    .review-item {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(244, 242, 239, 0.62);
+    }
+
+    .review-item.correct {
+      border-color: rgba(115, 214, 161, 0.74);
+    }
+
+    .review-item.wrong {
+      border-color: rgba(255, 127, 115, 0.74);
+    }
+
+    .review-item p {
+      margin: 0 0 8px;
+      line-height: 1.45;
+    }
+
+    .review-badge {
+      display: inline-flex;
+      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(64, 26, 18, 0.1);
+    }
+
+    @media (hover: none) {
+      .button:hover:not(:disabled),
+      .option-button:hover:not(:disabled) {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        display: block;
+        padding: 10px;
+      }
+
+      .app {
+        width: 100%;
+      }
+
+      .screen {
+        min-height: calc(100dvh - 20px);
+        border-radius: 22px;
+        padding: 18px;
+      }
+
+      .home-actions, .quiz-actions, .result-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .home-actions, .quiz-actions, .result-actions {
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      h1 {
+        font-size: clamp(34px, 12vw, 52px);
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        font-size: clamp(25px, 8vw, 36px);
+      }
+
+      .camp-title { font-size: clamp(22px, 7vw, 32px); }
+      .home-subtitle { font-size: 16px; margin-bottom: 16px; }
+      .greeting-card { margin-top: 16px; padding: 16px; border-radius: 18px; gap: 10px; }
+      .greeting-card li, .lead, .helper-text {
+        font-size: 16px;
+      }
+
+      .topline { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+      .counter { min-height: 42px; font-size: 18px; }
+      .progress-track { height: 14px; }
+      .question-card { min-height: auto; padding: 18px; border-radius: 22px; }
+      .question-type { font-size: 16px; margin-bottom: 10px; }
+      .question-text { font-size: clamp(24px, 7.2vw, 34px); line-height: 1.28; }
+      .options { grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
+      .button, .option-button { width: 100%; }
+      .button { min-height: 52px; border-radius: 18px; font-size: 18px; }
+      .option-button { min-height: 58px; border-radius: 18px; padding: 14px 16px; font-size: 20px; }
+      .answer-input { min-height: 54px; margin-top: 18px; border-radius: 18px; font-size: 20px; }
+      .answer-box, .message-box { margin-top: 16px; font-size: 20px; }
+      .answer-sheet { max-height: 54dvh; padding: 14px; border-radius: 18px; }
+      .answer-sheet li { font-size: 15px; padding: 9px 10px; }
+    }
+
+    @media (max-width: 380px) {
+      .screen { padding: 14px; }
+      .question-text { font-size: 23px; }
+      .option-button, .answer-input, .answer-box, .message-box { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
+      <p class="camp-title">★ 대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선</p>
+      <h1 id="mainTitle">콤케드 킹덤골든벨</h1>
+      <p class="home-subtitle">2026 KOMKED SUMMER MK CAMP</p>
+      <div class="greeting-card" aria-label="골든벨 인사말">
+        <ol>
+          <li>올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 <em>제1회 킹덤골든벨</em>이 진행됩니다.</li>
+          <li>이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 <em>기출문제 100선</em>입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</li>
+          <li>한 화면에 한 문제씩 표시됩니다.</li>
+        </ol>
+      </div>
+
+      <div class="home-actions">
+        <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
+        <button id="answerSheetButton" class="button secondary" type="button" aria-expanded="false" aria-controls="answerSheetPanel">답안지</button>
+      </div>
+      <p id="dataCountText" class="helper-text"></p>
+      <section id="answerSheetPanel" class="answer-sheet" aria-label="전체 퀴즈 답안지" hidden>
+        <h2>답안지</h2>
+        <p>모든 퀴즈의 정답을 한눈에 확인할 수 있습니다.</p>
+        <ol id="answerSheetList"></ol>
+      </section>
+    </section>
+
+    <section id="quizScreen" class="screen" aria-labelledby="questionText">
+      <div class="topline">
+        <span id="counterText" class="counter">1 / 1</span>
+        <div class="progress-track" aria-label="진행률">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <article class="question-card">
+        <span id="questionType" class="question-type">주관식</span>
+        <h2 id="questionText" class="question-text"></h2>
+        <div id="optionsContainer" class="options" aria-label="보기 선택"></div>
+        <input id="shortAnswerInput" class="answer-input" type="text" autocomplete="off" placeholder="답을 입력하세요" aria-label="주관식 답 입력" />
+        <div id="answerBox" class="answer-box" aria-live="polite"></div>
+        <div id="messageBox" class="message-box" aria-live="polite"></div>
+      </article>
+
+      <div class="quiz-actions">
+        <button id="nextButton" class="button primary" type="button">다음</button>
+        <button id="homeButton" class="button secondary" type="button">처음으로 돌아가기</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen" aria-labelledby="resultTitle">
+      <p class="eyebrow">퀴즈 완료</p>
+      <h2 id="resultTitle">결과</h2>
+      <div class="result-card">
+        <p><span>총 문제 수</span><strong id="totalCount">0</strong></p>
+        <p><span>맞힌 문제 수</span><strong id="correctCount">0</strong></p>
+        <p><span>틀린 문제 수</span><strong id="wrongCount">0</strong></p>
+      </div>
+      <p class="lead">아래에서 모든 문제의 내 답과 정답을 한 번에 확인할 수 있습니다.</p>
+      <div id="resultReview" class="result-review" aria-label="전체 문제 정답 및 오답 확인"></div>
+      <div class="result-actions">
+        <button id="restartButton" class="button primary" type="button">다시 시작하기</button>
+        <button id="resultHomeButton" class="button secondary" type="button">처음으로 돌아가기</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      questions: [],
+      currentIndex: 0,
+      selected: false,
+      shortAnswerVisible: false,
+      answers: []
+    };
+
+    const homeScreen = document.getElementById("homeScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const resultScreen = document.getElementById("resultScreen");
+    const startButton = document.getElementById("startButton");
+    const answerSheetButton = document.getElementById("answerSheetButton");
+    const answerSheetPanel = document.getElementById("answerSheetPanel");
+    const answerSheetList = document.getElementById("answerSheetList");
+    const dataCountText = document.getElementById("dataCountText");
+    const counterText = document.getElementById("counterText");
+    const progressFill = document.getElementById("progressFill");
+    const questionType = document.getElementById("questionType");
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const shortAnswerInput = document.getElementById("shortAnswerInput");
+    const answerBox = document.getElementById("answerBox");
+    const messageBox = document.getElementById("messageBox");
+    const nextButton = document.getElementById("nextButton");
+    const homeButton = document.getElementById("homeButton");
+    const totalCount = document.getElementById("totalCount");
+    const correctCount = document.getElementById("correctCount");
+    const wrongCount = document.getElementById("wrongCount");
+    const resultReview = document.getElementById("resultReview");
+    const restartButton = document.getElementById("restartButton");
+    const resultHomeButton = document.getElementById("resultHomeButton");
+
+    function showScreen(screen) {
+      [homeScreen, quizScreen, resultScreen].forEach((target) => {
+        target.classList.toggle("active", target === screen);
+      });
+    }
+
+    function shuffleCopy(items) {
+      const copied = [...items];
+      for (let index = copied.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [copied[index], copied[randomIndex]] = [copied[randomIndex], copied[index]];
+      }
+      return copied;
+    }
+
+    // 정답 비교 시 ①, 1. 같은 선택지 번호를 제거해 안정적으로 비교합니다.
+    function normalizeAnswer(value) {
+      return String(value)
+        .trim()
+        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, "")
+        .replace(/^\d+[.)]\s*/, "")
+        .trim();
+    }
+
+    function getQuestionTypeLabel(type) {
+      if (type === "multiple") return "객관식";
+      if (type === "ox") return "OX";
+      return "주관식";
+    }
+
+    function startQuiz() {
+      answerSheetPanel.hidden = true;
+      answerSheetButton.setAttribute("aria-expanded", "false");
+      answerSheetButton.textContent = "답안지";
+      state.questions = shuffleCopy(quizData);
+      state.currentIndex = 0;
+      state.selected = false;
+      state.shortAnswerVisible = false;
+      state.answers = [];
+      showScreen(quizScreen);
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const current = state.questions[state.currentIndex];
+
+      // 한 화면에는 현재 문제 하나만 표시하고, 이전 문제의 흔적은 모두 초기화합니다.
+      optionsContainer.replaceChildren();
+      shortAnswerInput.value = "";
+      shortAnswerInput.style.display = "none";
+      shortAnswerInput.disabled = false;
+      answerBox.textContent = "";
+      answerBox.classList.remove("visible");
+      messageBox.textContent = "";
+      messageBox.className = "message-box";
+      document.body.classList.remove("damage");
+      clearConfetti();
+      state.selected = false;
+      state.shortAnswerVisible = false;
+
+      if (!current) {
+        renderResult();
+        return;
+      }
+
+      const progress = ((state.currentIndex + 1) / state.questions.length) * 100;
+      counterText.textContent = `${state.currentIndex + 1} / ${state.questions.length}`;
+      progressFill.style.width = `${progress}%`;
+      questionType.textContent = getQuestionTypeLabel(current.type);
+      questionText.textContent = current.question;
+
+      if (current.type === "short") {
+        shortAnswerInput.style.display = "block";
+        shortAnswerInput.focus();
+        nextButton.disabled = true;
+        nextButton.textContent = "정답 확인";
+        messageBox.textContent = "답을 입력한 뒤 정답 확인 버튼을 눌러주세요.";
+        messageBox.classList.add("info");
+        return;
+      }
+
+      nextButton.disabled = true;
+      nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
+      current.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-button";
+        button.textContent = option;
+        button.addEventListener("click", () => selectOption(option, button));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectOption(option, selectedButton) {
+      if (state.selected) return;
+
+      const current = state.questions[state.currentIndex];
+      const selectedAnswer = normalizeAnswer(option);
+      const correctAnswer = normalizeAnswer(current.answer);
+      const isCorrect = selectedAnswer === correctAnswer;
+
+      state.selected = true;
+      nextButton.disabled = false;
+      selectedButton.classList.add(isCorrect ? "correct" : "wrong");
+      optionsContainer.querySelectorAll(".option-button").forEach((button) => {
+        button.disabled = true;
+        if (normalizeAnswer(button.textContent) === correctAnswer) {
+          button.classList.add("correct");
+        }
+      });
+
+      recordAnswer(current, option, correctAnswer, isCorrect);
+      showResultEffect(isCorrect, correctAnswer);
+    }
+
+    function handleNext() {
+      const current = state.questions[state.currentIndex];
+      if (!current) return;
+
+      if (current.type === "short" && !state.shortAnswerVisible) {
+        const typedAnswer = shortAnswerInput.value.trim();
+        if (!typedAnswer) {
+          shortAnswerInput.focus();
+          return;
+        }
+        const isCorrect = normalizeAnswer(typedAnswer) === normalizeAnswer(current.answer);
+        state.shortAnswerVisible = true;
+        state.selected = true;
+        shortAnswerInput.disabled = true;
+        answerBox.textContent = `내 답: ${typedAnswer} / 정답: ${current.answer}`;
+        answerBox.classList.add("visible");
+        recordAnswer(current, typedAnswer, normalizeAnswer(current.answer), isCorrect);
+        showResultEffect(isCorrect, normalizeAnswer(current.answer));
+        nextButton.textContent = isLastQuestion() ? "결과 보기" : "다음 문제";
+        return;
+      }
+
+      if ((current.type === "multiple" || current.type === "ox") && !state.selected) {
+        return;
+      }
+
+      if (isLastQuestion()) {
+        renderResult();
+        return;
+      }
+
+      state.currentIndex += 1;
+      renderQuestion();
+    }
+
+    function isLastQuestion() {
+      return state.currentIndex >= state.questions.length - 1;
+    }
+
+    function renderResult() {
+      const correctTotal = state.answers.filter((answer) => answer.isCorrect).length;
+      const wrongTotal = state.answers.length - correctTotal;
+      totalCount.textContent = quizData.length;
+      correctCount.textContent = correctTotal;
+      wrongCount.textContent = wrongTotal;
+      renderResultReview();
+      showScreen(resultScreen);
+    }
+
+    function recordAnswer(question, userAnswer, correctAnswer, isCorrect) {
+      state.answers[state.currentIndex] = {
+        question: question.question,
+        type: question.type,
+        userAnswer: normalizeAnswer(userAnswer),
+        correctAnswer,
+        isCorrect
+      };
+    }
+
+    function renderResultReview() {
+      const reviewItems = state.questions.map((question, index) => {
+        const answer = state.answers[index] || {
+          question: question.question,
+          type: question.type,
+          userAnswer: "응답 없음",
+          correctAnswer: normalizeAnswer(question.answer),
+          isCorrect: false
+        };
+        const item = document.createElement("article");
+        item.className = `review-item ${answer.isCorrect ? "correct" : "wrong"}`;
+        item.innerHTML = `
+          <span class="review-badge">${answer.isCorrect ? "정답" : "오답"} · ${getQuestionTypeLabel(answer.type)}</span>
+          <p><strong>Q${index + 1}.</strong> ${escapeHtml(answer.question)}</p>
+          <p>내 답: <strong>${escapeHtml(answer.userAnswer)}</strong></p>
+          <p>정답: <strong>${escapeHtml(answer.correctAnswer)}</strong></p>
+        `;
+        return item;
+      });
+      resultReview.replaceChildren(...reviewItems);
+    }
+
+    function returnHome() {
+      state.questions = [];
+      state.currentIndex = 0;
+      state.selected = false;
+      state.shortAnswerVisible = false;
+      state.answers = [];
+      showScreen(homeScreen);
+    }
+
+    function showResultEffect(isCorrect, correctAnswer) {
+      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
+      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+      if (isCorrect) {
+        launchConfetti();
+      } else {
+        document.body.classList.add("damage");
+        window.setTimeout(() => document.body.classList.remove("damage"), 480);
+      }
+    }
+
+    function launchConfetti() {
+      clearConfetti();
+      const colors = ["#9b847b", "#dad7cd", "#805640", "#c7bbb1", "#401a12", "#b79c89"];
+      for (let index = 0; index < 150; index += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[index % colors.length];
+        piece.style.setProperty("--drift", `${Math.random() * 220 - 110}px`);
+        piece.style.animationDelay = `${Math.random() * 0.35}s`;
+        document.body.appendChild(piece);
+        window.setTimeout(() => piece.remove(), 2300);
+      }
+    }
+
+    function clearConfetti() {
+      document.querySelectorAll(".confetti-piece").forEach((piece) => piece.remove());
+    }
+
+    function renderAnswerSheet() {
+      const items = quizData.map((item, index) => {
+        const li = document.createElement("li");
+        const typeLabel = getQuestionTypeLabel(item.type);
+        li.innerHTML = `<span>${index + 1}. [${typeLabel}] ${escapeHtml(item.question)}</span><br><strong>정답: ${escapeHtml(normalizeAnswer(item.answer))}</strong>`;
+        return li;
+      });
+      answerSheetList.replaceChildren(...items);
+    }
+
+    function toggleAnswerSheet() {
+      const willOpen = answerSheetPanel.hidden;
+      answerSheetPanel.hidden = !willOpen;
+      answerSheetButton.setAttribute("aria-expanded", String(willOpen));
+      answerSheetButton.textContent = willOpen ? "답안지 닫기" : "답안지";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function validateQuizData() {
+      const multipleIssues = quizData.filter((item) => item.type === "multiple" && item.options.length !== 4);
+      const oxIssues = quizData.filter((item) => item.type === "ox" && item.options.join(",") !== "O,X");
+      console.info(`총 문제 수: ${quizData.length}`);
+      console.info(`객관식 보기 개수 오류: ${multipleIssues.length}`);
+      console.info(`OX 보기 오류: ${oxIssues.length}`);
+    }
+
+    function cleanupDuplicateHomeElements() {
+      // 이전 수정 과정에서 같은 소개글/시작 버튼이 중복되어도 첫 번째 요소만 남깁니다.
+      document.querySelectorAll("#homeScreen .greeting-card").forEach((card, index) => {
+        if (index > 0) card.remove();
+      });
+      document.querySelectorAll("#homeScreen #startButton").forEach((button, index) => {
+        if (index > 0) button.remove();
+      });
+    }
+
+    function bindEvents() {
+      startButton.addEventListener("click", startQuiz);
+      answerSheetButton.addEventListener("click", toggleAnswerSheet);
+      nextButton.addEventListener("click", handleNext);
+      shortAnswerInput.addEventListener("input", () => {
+        const current = state.questions[state.currentIndex];
+        if (current?.type === "short" && !state.shortAnswerVisible) {
+          nextButton.disabled = shortAnswerInput.value.trim().length === 0;
+        }
+      });
+      shortAnswerInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !nextButton.disabled) {
+          handleNext();
+        }
+      });
+      homeButton.addEventListener("click", returnHome);
+      restartButton.addEventListener("click", startQuiz);
+      resultHomeButton.addEventListener("click", returnHome);
+    }
+
+    /*
+      quizData 수정 방법
+      - question: 질문 원문
+      - answer: 정답 원문. 객관식 번호가 붙어도 normalizeAnswer 함수가 비교용 텍스트로 정리합니다.
+      - type: "short"(주관식), "multiple"(객관식), "ox"(O/X)
+      - options: 주관식은 [], 객관식은 보기 4개, OX는 ["O", "X"]
+    */
+    const quizData = [
+      {
+            "question": "대한민국의 수도는 어디인가요?",
+            "answer": "서울",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "흰 바탕에 태극 문양과 네 개의 괘가 그려진 대한민국의 국기는 무엇인가요?",
+            "answer": "태극기",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "대한민국의 국화는 무엇인가요?",
+            "answer": "무궁화",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국에서 돈을 셀 때 사용하는 화폐 단위는 무엇인가요?",
+            "answer": "원",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국 사람들이 읽고 쓰는 대표 문자의 이름은 무엇인가요?",
+            "answer": "한글",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국에서 가장 금액이 큰 지폐는 몇 만 원권인가요?",
+            "answer": "5만원",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "범죄를 신고하거나 경찰의 도움이 필요할 때 거는 전화번호는 무엇인가요?",
+            "answer": "112",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "불이 나거나, 사람이 다치거나, 구조가 필요할 때 거는 긴급 전화번호는 무엇인가요?",
+            "answer": "119",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국에서 빠른 기차를 탈 때 많이 이용하는 대표 고속철도 이름은 무엇인가요?",
+            "answer": "KTX",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "올림픽이나 국제 경기에서 대한민국을 나타내는 영어 약자는 무엇인가요?",
+            "answer": "KOR",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "애국가 1절 첫 부분으로, “동해물과 [     ]이 마르고 닳도록” 빈칸에 들어갈 말은 무엇인가요?",
+            "answer": "백두산",
+            "type": "multiple",
+            "options": [
+                  "백두산",
+                  "한라산",
+                  "지리산",
+                  "금강산"
+            ]
+      },
+      {
+            "question": "한국의 시간은 세계 표준시 UTC보다 몇 시간 빠른가요?",
+            "answer": "9시간",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "대한민국의 국제 전화 국가번호는 무엇인가요?",
+            "answer": "82",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "서울 잠실에 있으며, 놀이기구와 퍼레이드로 유명한 대표 놀이공원은 어디인가요?",
+            "answer": "롯데월드",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "경기도 용인에 있으며, 사파리와 놀이기구로 유명한 대표 놀이공원은 어디인가요?",
+            "answer": "에버랜드",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국의 전통 옷입니다. 명절이나 결혼식, 특별한 날에 입기도 하고, 알록달록한 색과 고운 선이 아름다운 옷은 무엇인가요?",
+            "answer": "한복",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국 사람들은 설날 아침에 새해를 맞이하며 이 음식을 먹습니다. 이 음식을 먹으면 한 살 더 먹는다는 말도 있습니다. 이 음식은 무엇일까요?",
+            "answer": "떡국",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국의 명절인 추석에는 가족들이 모여 보름달을 보며 이 떡을 빚어 먹습니다. 반달 모양으로 생긴 이 떡은 무엇일까요?",
+            "answer": "송편",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국 사람들은 생일이 되면 태어나게 해주신 부모님께 감사하는 마음을 담아 이 국을 먹습니다. 또한 출산 후 산모가 회복을 위해 먹는 국으로도 잘 알려져 있습니다. 이 국은 무엇일까요?",
+            "answer": "미역국",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "밥 위에 여러 가지 나물, 고기, 달걀 등을 올리고 고추장을 넣어 쓱쓱 비벼 먹는 한국 음식은 무엇인가요?",
+            "answer": "비빔밥",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국의 전통 놀이입니다. 네 개의 나무 막대를 던져 나온 모양에 따라 말을 움직이는  놀이는 무엇인가요?",
+            "answer": "윷놀이",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국의 전통 놀이입니다. 동그란 물건에 깃털이 달린 것을 발로 차며 땅에 떨어뜨리지 않도록 하는 놀이는 무엇인가요?",
+            "answer": "제기차기",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국 음식에서 매운맛과 깊은 맛을 낼 때 자주 사용하는 빨간 양념입니다. 비빔밥에 넣어 비벼 먹기도 하는 이 양념은 무엇인가요?",
+            "answer": "고추장",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국을 대표하는 발효 음식입니다. 배추나 무에 고춧가루와 양념을 버무려 익혀 먹고, 한국 밥상에 자주 올라오는 음식은 무엇인가요?",
+            "answer": "김치",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "아기가 태어난 지 1년이 되는 날을 기념하는 잔치는 무엇인가요?",
+            "answer": "돌잔치",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "설날에 아이들이 어른들께 절을 하며 새해 인사를 드리는 전통 인사는 무엇일까요?",
+            "answer": "세배",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "북, 장구, 꽹과리, 징을 사용하는 한국 전통 음악은 무엇인가요?",
+            "answer": "사물놀이",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국에서 여름철 몸보신 음식으로 자주 먹는 닭고기 보양식은 무엇인가요?",
+            "answer": "삼계탕",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국의 대표 무술입니다. 발차기와 예절을 중요하게 여기고, 흰 도복을 입고 배우는 운동은 무엇인가요?",
+            "answer": "태권도",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "투명하고 쫄깃한 당면에 여러 가지 채소와 고기를 넣고 간장 양념으로 볶아 만든 한국 음식은 무엇인가요?",
+            "answer": "잡채",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한국에서는 어른이나 처음 만난 사람에게 더 공손하게 말하는 문화가 있습니다. 이런 공손한 말투를 무엇이라고 하나요?",
+            "answer": "존댓말",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "조선 시대에는 글을 읽고 쓰기 어려운 백성들이 많았습니다. 이 왕은 백성들이 쉽게 배울 수 있는 우리 글자를 만들었습니다. 한글을 만든 조선의 왕은 누구인가요?",
+            "answer": "세종대왕",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한글은 처음 만들어졌을 때 다른 이름으로 불렸습니다. “백성을 가르치는 바른 소리”라는 뜻을 가진 한글의 처음 이름은 무엇인가요?",
+            "answer": "훈민정음",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "조선 시대의 수도였던 도시는 오늘날 대한민국의 수도인 서울에 해당합니다. 당시에는 서울을 지금과 다른 이름으로 불렀습니다. 조선의 수도였던 이 도시는 어디인가요?",
+            "answer": "한양",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "임진왜란 때 조선은 큰 어려움을 겪었습니다. 이 장군은 바다에서 나라를 지키며 많은 승리를 이끌었고, 거북선과 함께 떠오르는 인물입니다. 누구인가요?",
+            "answer": "이순신",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "조선 시대에는 백성들의 생활을 돕기 위한 여러 과학 기구가 만들어졌습니다. 이 인물은 측우기, 해시계 같은 과학 기구와 관련 있는 조선의 발명가이자 과학자로 알려져 있습니다. 누구인가요?",
+            "answer": "장영실",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "열일곱 살 어린 나이에도 “대한 독립 만세!”를 외쳤던 대표적인 여성 독립운동가는 누구인가요?",
+            "answer": "유관순",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "어린이를 ‘어른보다 낮은 존재’가 아니라 소중한 사람으로 여기며 5월 5일 어린이날을 만든 인물은 누구인가요?",
+            "answer": "방정환",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "고려가 끝난 뒤 새로운 나라 조선이 세워졌습니다. 이 인물은 조선을 세우고 조선의 첫 번째 왕이 되었으며, 왕이 된 뒤에는 ‘태조’라고 불렸습니다. 이 인물은 누구인가요?",
+            "answer": "이성계",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "올림픽에서 금메달을 땄지만, 당시 나라를 빼앗긴 아픔을 겪어야 했던 마라톤 선수는 누구인가요?",
+            "answer": "손기정",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“내 소원은 우리나라의 완전한 독립입니다.” 나라의 독립을 위해 힘썼고, 『백범일지』를 남긴 인물은 누구인가요?",
+            "answer": "김구",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "서울에는 조선 시대 왕들이 살고 나라 일을 보던 궁궐들이 남아 있습니다. 그중 광화문이 있는 대표 궁궐로, 많은 사람들이 서울 여행 때 찾는 곳은 어디인가요?",
+            "answer": "경복궁",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "조선 시대에는 왕의 말과 행동, 나라의 중요한 일을 자세히 기록했습니다. 이 기록은 오늘날 조선의 역사를 아는 데 매우 중요한 자료가 되었습니다. 이 책은 무엇인가요?",
+            "answer": "조선왕조실록",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "이순신 장군은 전쟁 중에도 매일의 일과 생각, 전쟁 상황을 기록했습니다. 이 기록은 이순신 장군의 마음과 당시 상황을 알 수 있는 소중한 자료입니다. 이 일기의 이름은 무엇인가요?",
+            "answer": "난중일기",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "1919년 3월 1일, 많은 사람들이 태극기를 들고 거리로 나와 “대한 독립 만세!”를 외쳤습니다. 우리나라의 독립을 바라는 마음을 담은 3·1운동을 기억하는 날입니다. 이 국경일의 이름은 무엇인가요?",
+            "answer": "삼일절",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "우리나라가 일본의 지배에서 벗어난 날을 기념하는 국경일은 무엇인가요?",
+            "answer": "광복절",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“나라를 위해 희생하신 분들을 잊지 않겠습니다.” 이 마음을 담아 지키는 현충일은 몇 월 며칠인가요?",
+            "answer": "6월 6일",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "한글의 소중함을 기억하는 한글날은 몇 월 며칠인가요?",
+            "answer": "10월 9일",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "1945년, 우리나라가 일본의 지배에서 벗어난 것을 기념하는 광복절은 몇 월 며칠인가요?",
+            "answer": "8월 15일",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "대한민국에서 가장 큰 섬입니다. 귤, 돌하르방, 한라산으로 유명한 이 섬은 어디인가요?",
+            "answer": "제주도",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "제주도 한가운데에 있는 산으로, 대한민국에서 가장 높은 산은 무엇인가요?",
+            "answer": "한라산",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "서울을 흐르는 대표 강으로 시민들이 산책하고 자전거를 타러 많이 가는 이 강은 무엇인가요?",
+            "answer": "한강",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "바다와 가까운 한국의 대표 관광 도시로 강원도에 있는 도시는 어디인가요?",
+            "answer": "강릉",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "전주가 유명한 대표 음식은 무엇인가요?",
+            "answer": "비빔밥",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "다음 중 광역시가 아닌 곳은 어디인가요?",
+            "answer": "거제",
+            "type": "multiple",
+            "options": [
+                  "부산",
+                  "대구",
+                  "거제",
+                  "광주"
+            ]
+      },
+      {
+            "question": "부산에 있는 대표 해수욕장입니다. 여름이면 많은 사람들이 바다를 보러 가고, 부산 여행하면 가장 먼저 떠오르는 바다는 어디인가요?",
+            "answer": "해운대",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "비빔밥과 한옥마을로 유명한 전라북도의 대표 도시는 어디인가요?",
+            "answer": "전주",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "신라의 옛 수도였고, 불국사와 첨성대가 있는 역사 도시입니다. 수학여행지로도 유명한 이 도시는 어디인가요?",
+            "answer": "경주",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "2018년 동계 올림픽이 열린 강원도의 도시입니다. 눈과 겨울 스포츠로 유명한 이곳은 어디인가요?",
+            "answer": "평창",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "경기도 수원에 있는 성곽입니다. 성벽을 따라 걸을 수 있고, 유네스코 세계유산으로 등재된 이곳은 어디인가요?",
+            "answer": "수원화성",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "서울의 중심에 있는 산으로, N서울타워가 있어 서울을 내려다볼 수 있는 곳은 어디인가요?",
+            "answer": "남산",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "대한민국 동쪽 바다에 있는 섬입니다. 일본이 자기 땅이라고 주장하기도 하지만, 우리나라는 역사적·지리적으로 대한민국의 영토라고 밝히고 있습니다. 이 섬은 어디인가요?",
+            "answer": "독도",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "MK들에게도 익숙한 한동대학교가 있는 도시입니다. 동해 바다를 볼 수 있고, 호미곶의 ‘상생의 손’과 철강 산업으로 유명한 경상북도의 도시는 어디인가요?",
+            "answer": "포항",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "서울 마포구에 있는 장소입니다. 한국을 사랑하고 섬겼던 외국인 선교사들을 기억할 수 있는 묘원은 어디인가요?",
+            "answer": "양화진외국인선교사묘원",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“밥”의 높임말은 무엇인가요?",
+            "answer": "진지",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“나이”의 높임말은 무엇인가요?",
+            "answer": "연세",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“말”의 높임말은 무엇인가요?",
+            "answer": "말씀",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "“생일”의 높임말은 무엇인가요?",
+            "answer": "생신",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "손가락을 접으며 세어 봅시다. “하나, 둘, 셋” 다음에 오는 순우리말 숫자는 무엇인가요?",
+            "answer": "넷",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "순우리말로 숫자를 세어 봅시다. “다섯” 다음에 오는 말은 무엇인가요?",
+            "answer": "여섯",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "어머니의 어머니를 무엇이라고 부르나요?",
+            "answer": "외할머니",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "가족 호칭 문제입니다. 내 형, 누나, 오빠, 언니, 동생에게 자녀가 있을 때 그 아이를 부르는 말은 무엇인가요?",
+            "answer": "조카",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "가족 호칭 문제입니다. 나보다 나이가 많은 여자 형제인 ‘언니’가 결혼했을 때, 언니의 남편을 부르는 말은 무엇인가요?",
+            "answer": "① 형부",
+            "type": "multiple",
+            "options": [
+                  "① 형부",
+                  "② 매형",
+                  "③ 매제",
+                  "④ 제부"
+            ]
+      },
+      {
+            "question": "가족 호칭 문제입니다. 나보다 나이가 많은 남자 형제인 ‘형’이 결혼했을 때, 형의 아내를 부르는 말은 무엇인가요?",
+            "answer": "② 형수",
+            "type": "multiple",
+            "options": [
+                  "① 올케",
+                  "② 형수",
+                  "③ 제수",
+                  "④ 삼촌"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 떡볶이",
+            "type": "multiple",
+            "options": [
+                  "① 떡볶이",
+                  "② 떡복이",
+                  "③ 떡복기",
+                  "④ 떡복끼"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 계란말이",
+            "type": "multiple",
+            "options": [
+                  "① 계란말이",
+                  "② 개란말이",
+                  "③ 게란말이",
+                  "④ 계란마리"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 오랜만",
+            "type": "multiple",
+            "options": [
+                  "① 오랜만",
+                  "② 오랫만",
+                  "③ 오래만",
+                  "④ 오렌만"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 설거지",
+            "type": "multiple",
+            "options": [
+                  "① 설거지",
+                  "② 설겆이",
+                  "③ 설걷이",
+                  "④ 설거치"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 며칠",
+            "type": "multiple",
+            "options": [
+                  "① 며칠",
+                  "② 몇일",
+                  "③ 몇칠",
+                  "④ 멷일"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 깨끗이",
+            "type": "multiple",
+            "options": [
+                  "① 깨끗이",
+                  "② 깨끗히",
+                  "③ 깨끄시",
+                  "④ 깨끗시"
+            ]
+      },
+      {
+            "question": "맞는 표현은 무엇인가요?",
+            "answer": "① 반드시",
+            "type": "multiple",
+            "options": [
+                  "① 반드시",
+                  "② 반듯이",
+                  "③ 반듯히",
+                  "④ 반드히"
+            ]
+      },
+      {
+            "question": "아주 작은 먼지 같은 것도 계속 모으면 큰 산처럼 많아질 수 있다는 뜻의 속담입니다. ‘티끌 모아 [ ]’ 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "태산",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "아무리 잘하는 사람도 가끔은 실수할 수 있다는 뜻의 속담입니다. ‘원숭이도 [ ]에서 떨어진다’ 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "나무",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "힘센 사람들끼리 싸우면 약한 사람이 피해를 볼 수 있다는 뜻의 속담입니다. ‘고래 싸움에 [ ] 등 터진다’ 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "새우",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "말은 언제 어디서든 조심해야 한다는 뜻의 속담입니다. ‘낮말은 새가 듣고 밤말은 [ ]가 듣는다’ 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "쥐",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "원하는 기준이나 기대가 높을 때 쓰는 관용표현입니다. “저 친구는 [ ]이 높다” 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "눈",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "비밀을 잘 지키는 사람에게 쓰는 관용표현입니다. “그 사람은 [ ]이 무겁다” 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "입",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "아는 사람이 많고 여러 사람과 잘 연결되어 있을 때 쓰는 관용표현입니다. “[ ]이 넓다” 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "발",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "음식을 많이 하거나 돈을 넉넉하게 쓰는 사람에게 쓰는 관용표현입니다. “[ ]이 크다” 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "손",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "상황을 빨리 알아차리는 사람에게 쓰는 관용표현입니다. “[ ]가 빠르다” 괄호에 들어갈 말은 무엇인가요?",
+            "answer": "눈치",
+            "type": "short",
+            "options": []
+      },
+      {
+            "question": "‘코앞에 있다’는 ‘아주 가까운 곳에 있다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘눈 깜짝할 사이’는 ‘아주 긴 시간’이라는 뜻이다.",
+            "answer": "X",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘귀가 얇다’는 ‘다른 사람 말에 쉽게 흔들린다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘한눈팔다’는 ‘해야 할 일에 집중하지 않고 다른 데 관심을 두다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘손을 놓다’는 ‘하던 일을 계속 붙잡고 열심히 하다’라는 뜻이다.",
+            "answer": "X",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘배보다 배꼽이 크다’는 ‘부수적인 것이 더 크다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘시작이 반이다’는 ‘시작은 별로 중요하지 않다’라는 뜻이다.",
+            "answer": "X",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘마음이 통하다’는 ‘생각이나 감정이 잘 맞다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘입이 가볍다’는 ‘비밀을 잘 지킨다’라는 뜻이다.",
+            "answer": "X",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      },
+      {
+            "question": "‘말 한마디에 천 냥 빚도 갚는다’는 ‘말을 잘하면 어려운 일도 해결할 수 있다’라는 뜻이다.",
+            "answer": "O",
+            "type": "ox",
+            "options": [
+                  "O",
+                  "X"
+            ]
+      }
+];
+
+    function initializeApp() {
+      cleanupDuplicateHomeElements();
+      bindEvents();
+      dataCountText.textContent = `현재 등록된 문제는 ${quizData.length}개입니다.`;
+      renderAnswerSheet();
+      validateQuizData();
+    }
+
+    initializeApp();
+  </script>
+</body>
+</html>
