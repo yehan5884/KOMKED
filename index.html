@@ -22,6 +22,19 @@
       --surface-dark: #593225;
       --ink-dark: #280b05;
       --shadow: 0 24px 70px rgba(64, 26, 18, 0.16);
+    :root {
+      --bg: #f7f9ff;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --gold: #f5b301;
+      --soft-blue: #eaf2ff;
+      --border: #d9e4f5;
+      --success: #12823b;
+      --danger: #d92d20;
+      --shadow: 0 24px 70px rgba(23, 32, 51, 0.14);
     }
 
     * { box-sizing: border-box; }
@@ -38,6 +51,12 @@
         radial-gradient(circle at 86% 18%, rgba(199, 187, 177, 0.5), transparent 24%),
         radial-gradient(circle at 18% 88%, rgba(128, 86, 64, 0.14), transparent 28%),
         linear-gradient(145deg, #f4f2ef 0%, #dedad3 40%, #c7bbb1 72%, #aa9b92 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(245, 179, 1, 0.24), transparent 32%),
+        radial-gradient(circle at 80% 8%, rgba(37, 99, 235, 0.18), transparent 30%),
+        var(--bg);
       display: grid;
       place-items: center;
       padding: clamp(14px, 3vw, 34px);
@@ -65,6 +84,9 @@
     .app {
       position: relative;
       z-index: 1;
+    button { font: inherit; }
+
+    .app {
       width: min(880px, 100%);
     }
 
@@ -73,6 +95,8 @@
       background: linear-gradient(180deg, rgba(244, 242, 239, 0.94), rgba(218, 215, 205, 0.9));
       border: 2px solid var(--border);
       backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.96);
+      border: 2px solid rgba(217, 228, 245, 0.95);
       border-radius: clamp(22px, 4vw, 36px);
       box-shadow: var(--shadow);
       padding: clamp(20px, 4vw, 42px);
@@ -86,6 +110,7 @@
       gap: 8px;
       margin: 0 0 14px;
       color: var(--gold);
+      color: var(--primary-dark);
       font-weight: 900;
       font-size: clamp(18px, 2vw, 24px);
     }
@@ -201,6 +226,15 @@
       color: var(--text);
       background: var(--soft-blue);
       border: 2px solid var(--border);
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .secondary {
+      color: var(--primary-dark);
+      background: var(--soft-blue);
+      border: 2px solid #c7d8f6;
     }
 
     .setting-card {
@@ -213,6 +247,7 @@
       border: 2px solid var(--border);
       border-radius: 28px;
       background: rgba(244, 242, 239, 0.62);
+      background: #fbfdff;
     }
 
     .setting-card strong {
@@ -249,6 +284,7 @@
       height: 50px;
       border-radius: 50%;
       background: rgba(244, 242, 239, 0.95);
+      background: #fff;
       transition: transform 0.2s ease;
     }
 
@@ -271,6 +307,8 @@
       border-radius: 999px;
       background: rgba(64, 26, 18, 0.08);
       color: var(--gold);
+      background: #fff4cc;
+      color: #7a5200;
       font-size: clamp(20px, 2.4vw, 28px);
       font-weight: 900;
     }
@@ -282,6 +320,8 @@
       border-radius: 999px;
       background: rgba(64, 26, 18, 0.1);
       border: 1px solid var(--border);
+      background: #e7eef9;
+      border: 1px solid #d2def0;
     }
 
     .progress-fill {
@@ -289,6 +329,7 @@
       height: 100%;
       border-radius: inherit;
       background: linear-gradient(90deg, #401a12, #805640, #c7bbb1);
+      background: linear-gradient(90deg, var(--gold), var(--primary));
       transition: width 0.25s ease;
     }
 
@@ -298,6 +339,7 @@
       border: 2px solid var(--border);
       border-radius: 30px;
       background: linear-gradient(180deg, rgba(244, 242, 239, 0.76), rgba(199, 187, 177, 0.26));
+      background: linear-gradient(180deg, #fff, #fbfdff);
     }
 
     .question-type {
@@ -307,6 +349,7 @@
       border-radius: 999px;
       background: var(--soft-blue);
       color: var(--gold);
+      color: var(--primary-dark);
       font-size: clamp(18px, 2vw, 24px);
       font-weight: 900;
     }
@@ -334,6 +377,8 @@
       padding: 18px 24px;
       background: var(--surface-light);
       color: var(--ink-dark);
+      background: #fff;
+      color: var(--text);
       cursor: pointer;
       text-align: left;
       font-size: clamp(20px, 2.4vw, 28px);
@@ -353,12 +398,24 @@
 
     .option-button.correct {
       color: var(--surface-light);
+      background: #f5f9ff;
+    }
+
+    .option-button.selected {
+      color: #fff;
+      border-color: #7c3aed;
+      background: #7c3aed;
+    }
+
+    .option-button.correct {
+      color: #fff;
       border-color: var(--success);
       background: var(--success);
     }
 
     .option-button.wrong {
       color: var(--surface-light);
+      color: #fff;
       border-color: var(--danger);
       background: var(--danger);
     }
@@ -374,6 +431,8 @@
       font-weight: 900;
       color: var(--ink-dark);
       background: var(--surface-light);
+      color: var(--text);
+      background: #fff;
     }
 
     .answer-input:focus {
@@ -396,6 +455,9 @@
       color: var(--gold);
       background: rgba(64, 26, 18, 0.08);
       border: 2px solid var(--border);
+      color: #7a5200;
+      background: #fff4cc;
+      border: 2px solid #f8d66d;
     }
 
     .answer-box.visible { display: block; }
@@ -411,6 +473,7 @@
       border: 2px solid var(--border);
       border-radius: 28px;
       background: rgba(244, 242, 239, 0.62);
+      background: #fbfdff;
       font-size: clamp(26px, 3.2vw, 42px);
       font-weight: 900;
     }
@@ -459,6 +522,14 @@
 
     .answer-sheet strong {
       color: var(--gold);
+    .feedback-image {
+      display: none;
+      width: min(180px, 46vw);
+      margin: 18px auto 0;
+    }
+
+    .feedback-image.visible {
+      display: block;
     }
 
     body.damage {
@@ -555,6 +626,7 @@
         padding: 18px;
       }
 
+    @media (max-width: 760px) {
       .setting-card, .home-actions, .quiz-actions, .result-actions {
         align-items: stretch;
         flex-direction: column;
@@ -602,6 +674,11 @@
       .screen { padding: 14px; }
       .question-text { font-size: 23px; }
       .option-button, .answer-input, .answer-box, .message-box { font-size: 18px; }
+      .switch { flex-basis: 66px; width: 136px; }
+      .topline { grid-template-columns: 1fr; }
+      .options { grid-template-columns: 1fr; }
+      .button, .option-button { width: 100%; }
+      .question-card { min-height: 260px; }
     }
   </style>
 </head>
@@ -629,6 +706,20 @@
         <p>모든 퀴즈의 정답을 한눈에 확인할 수 있습니다.</p>
         <ol id="answerSheetList"></ol>
       </section>
+      <p class="eyebrow">대한민국 상식 · 문화 · 역사 · 언어</p>
+      <h1 id="mainTitle">골든벨 퀴즈</h1>
+      <p class="lead">★ 2026 MK SUMMER CAMP (보통 크게)
+콤케드 킹덤골든벨 (가장 크게)
+대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선 (작게)
+
+올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 제1회 킹덤골든벨이 진행됩니다.
+
+이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 기출문제 100선입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</p>
+
+      <div class="home-actions">
+        <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
+      </div>
+      <p id="dataCountText" class="helper-text"></p>
     </section>
 
     <section id="quizScreen" class="screen" aria-labelledby="questionText">
@@ -646,6 +737,7 @@
         <input id="shortAnswerInput" class="answer-input" type="text" autocomplete="off" placeholder="답을 입력하세요" aria-label="주관식 답 입력" />
         <div id="answerBox" class="answer-box" aria-live="polite"></div>
         <div id="messageBox" class="message-box" aria-live="polite"></div>
+        <img id="feedbackImage" class="feedback-image" alt="정답 결과 이미지" />
       </article>
 
       <div class="quiz-actions">
@@ -664,6 +756,9 @@
       </div>
       <p class="lead">아래에서 모든 문제의 내 답과 정답을 한 번에 확인할 수 있습니다.</p>
       <div id="resultReview" class="result-review" aria-label="전체 문제 정답 및 오답 확인"></div>
+        <p><span>진행한 문제 수</span><strong id="solvedCount">0</strong></p>
+      </div>
+      <p class="lead">수고하셨습니다. 다시 시작하면 현재 설정에 따라 새 순서로 진행됩니다.</p>
       <div class="result-actions">
         <button id="restartButton" class="button primary" type="button">다시 시작하기</button>
         <button id="resultHomeButton" class="button secondary" type="button">처음으로 돌아가기</button>
@@ -678,6 +773,11 @@
       selected: false,
       shortAnswerVisible: false,
       answers: []
+      randomMode: true,
+      questions: [],
+      currentIndex: 0,
+      selected: false,
+      shortAnswerVisible: false
     };
 
     const homeScreen = document.getElementById("homeScreen");
@@ -702,6 +802,11 @@
     const correctCount = document.getElementById("correctCount");
     const wrongCount = document.getElementById("wrongCount");
     const resultReview = document.getElementById("resultReview");
+    const feedbackImage = document.getElementById("feedbackImage");
+    const nextButton = document.getElementById("nextButton");
+    const homeButton = document.getElementById("homeButton");
+    const totalCount = document.getElementById("totalCount");
+    const solvedCount = document.getElementById("solvedCount");
     const restartButton = document.getElementById("restartButton");
     const resultHomeButton = document.getElementById("resultHomeButton");
 
@@ -757,6 +862,8 @@
       answerBox.classList.remove("visible");
       messageBox.textContent = "";
       messageBox.className = "message-box";
+      feedbackImage.classList.remove("visible");
+      feedbackImage.removeAttribute("src");
       document.body.classList.remove("damage");
       clearConfetti();
       state.selected = false;
@@ -898,6 +1005,11 @@
       resultReview.replaceChildren(...reviewItems);
     }
 
+      totalCount.textContent = quizData.length;
+      solvedCount.textContent = state.questions.length;
+      showScreen(resultScreen);
+    }
+
     function returnHome() {
       state.questions = [];
       state.currentIndex = 0;
@@ -910,6 +1022,11 @@
     function showResultEffect(isCorrect, correctAnswer) {
       messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
       messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+    
+      messageBox.className = `message-box ${isCorrect ? "correct" : "wrong"}`;
+      messageBox.textContent = isCorrect ? "정답입니다!" : `오답입니다. 정답: ${correctAnswer}`;
+      feedbackImage.src = isCorrect ? correctGif : wrongGif;
+      feedbackImage.classList.add("visible");
       if (isCorrect) {
         launchConfetti();
       } else {
@@ -922,6 +1039,8 @@
       clearConfetti();
       const colors = ["#9b847b", "#dad7cd", "#805640", "#c7bbb1", "#401a12", "#b79c89"];
       for (let index = 0; index < 150; index += 1) {
+      const colors = ["#f5b301", "#2563eb", "#22c55e", "#ef4444", "#a855f7"];
+      for (let index = 0; index < 70; index += 1) {
         const piece = document.createElement("span");
         piece.className = "confetti-piece";
         piece.style.left = `${Math.random() * 100}vw`;
