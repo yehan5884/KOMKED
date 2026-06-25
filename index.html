@@ -7,21 +7,21 @@
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
     :root {
-      --bg: #344e41;
-      --card: rgba(52, 78, 65, 0.92);
-      --text: #dad7cd;
-      --muted: #a3b18a;
-      --primary: #a3b18a;
-      --primary-dark: #588157;
-      --gold: #dad7cd;
-      --soft-blue: rgba(163, 177, 138, 0.18);
-      --border: rgba(218, 215, 205, 0.36);
-      --success: #a3b18a;
-      --danger: #dad7cd;
-      --surface-light: #dad7cd;
-      --surface-dark: #3a5a40;
-      --ink-dark: #344e41;
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      --bg: #dedad3;
+      --card: rgba(244, 242, 239, 0.94);
+      --text: #280b05;
+      --muted: #6e4432;
+      --primary: #805640;
+      --primary-dark: #401a12;
+      --gold: #9d7d69;
+      --soft-blue: rgba(199, 187, 177, 0.4);
+      --border: rgba(64, 26, 18, 0.22);
+      --success: #593225;
+      --danger: #401a12;
+      --surface-light: #f4f2ef;
+      --surface-dark: #593225;
+      --ink-dark: #280b05;
+      --shadow: 0 24px 70px rgba(64, 26, 18, 0.16);
     }
 
     * { box-sizing: border-box; }
@@ -34,9 +34,10 @@
       position: relative;
       overflow-x: hidden;
       background:
-        radial-gradient(circle at 78% 18%, rgba(163, 177, 138, 0.24), transparent 24%),
-        radial-gradient(circle at 18% 86%, rgba(218, 215, 205, 0.14), transparent 24%),
-        linear-gradient(145deg, #344e41 0%, #3a5a40 42%, #588157 72%, #344e41 100%);
+        radial-gradient(circle at 12% 12%, rgba(244, 242, 239, 0.7), transparent 26%),
+        radial-gradient(circle at 86% 18%, rgba(199, 187, 177, 0.5), transparent 24%),
+        radial-gradient(circle at 18% 88%, rgba(128, 86, 64, 0.14), transparent 28%),
+        linear-gradient(145deg, #f4f2ef 0%, #dedad3 40%, #c7bbb1 72%, #aa9b92 100%);
       display: grid;
       place-items: center;
       padding: clamp(14px, 3vw, 34px);
@@ -48,10 +49,10 @@
       inset: 0;
       z-index: -1;
       background:
-        linear-gradient(115deg, transparent 0 58%, rgba(218, 215, 205, 0.12) 58% 62%, transparent 62%),
-        linear-gradient(24deg, transparent 0 66%, rgba(163, 177, 138, 0.14) 66% 68%, transparent 68%),
-        radial-gradient(circle at 82% 82%, rgba(218, 215, 205, 0.14), transparent 18%),
-        linear-gradient(90deg, rgba(52, 78, 65, 0.3), rgba(52, 78, 65, 0.06) 48%, rgba(52, 78, 65, 0.3));
+        linear-gradient(115deg, transparent 0 58%, rgba(64, 26, 18, 0.06) 58% 62%, transparent 62%),
+        linear-gradient(24deg, transparent 0 66%, rgba(128, 86, 64, 0.08) 66% 68%, transparent 68%),
+        radial-gradient(circle at 82% 82%, rgba(244, 242, 239, 0.3), transparent 18%),
+        linear-gradient(90deg, rgba(244, 242, 239, 0.32), rgba(244, 242, 239, 0.04) 48%, rgba(64, 26, 18, 0.08));
       pointer-events: none;
     }
 
@@ -69,7 +70,7 @@
 
     .screen {
       display: none;
-      background: linear-gradient(180deg, rgba(52, 78, 65, 0.94), rgba(58, 90, 64, 0.88));
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.94), rgba(218, 215, 205, 0.9));
       border: 2px solid var(--border);
       backdrop-filter: blur(10px);
       border-radius: clamp(22px, 4vw, 36px);
@@ -111,18 +112,20 @@
     }
 
     .camp-title {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       color: var(--muted);
-      font-size: clamp(24px, 4vw, 44px);
+      font-size: clamp(22px, 3.2vw, 34px);
       font-weight: 900;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
+      line-height: 1.35;
     }
 
     .home-subtitle {
-      margin: -4px 0 24px;
-      color: var(--gold);
-      font-size: clamp(18px, 2.2vw, 26px);
+      margin: -6px 0 24px;
+      color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 22px);
       font-weight: 900;
+      letter-spacing: 0.08em;
       line-height: 1.35;
     }
 
@@ -133,14 +136,26 @@
       padding: 22px;
       border: 1px solid var(--border);
       border-radius: 24px;
-      background: rgba(218, 215, 205, 0.1);
+      background: rgba(244, 242, 239, 0.64);
     }
 
-    .greeting-card p {
+    .greeting-card ol {
+      display: grid;
+      gap: 14px;
       margin: 0;
+      padding-left: 1.4em;
+    }
+
+    .greeting-card li {
       color: var(--text);
       font-size: clamp(17px, 2vw, 22px);
       line-height: 1.65;
+    }
+
+    .greeting-card em {
+      color: var(--primary-dark);
+      font-style: normal;
+      font-weight: 900;
     }
 
     .lead, .setting-card p, .helper-text {
@@ -177,9 +192,9 @@
     }
 
     .primary {
-      color: var(--ink-dark);
-      background: linear-gradient(135deg, #dad7cd, #a3b18a);
-      box-shadow: 0 16px 30px rgba(52, 78, 65, 0.26);
+      color: var(--surface-light);
+      background: linear-gradient(135deg, #805640, #593225);
+      box-shadow: 0 16px 30px rgba(64, 26, 18, 0.18);
     }
 
     .secondary {
@@ -197,7 +212,7 @@
       padding: 24px;
       border: 2px solid var(--border);
       border-radius: 28px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(244, 242, 239, 0.62);
     }
 
     .setting-card strong {
@@ -233,7 +248,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(244, 242, 239, 0.95);
       transition: transform 0.2s ease;
     }
 
@@ -254,7 +269,7 @@
       min-height: 56px;
       padding: 10px 20px;
       border-radius: 999px;
-      background: rgba(218, 215, 205, 0.16);
+      background: rgba(64, 26, 18, 0.08);
       color: var(--gold);
       font-size: clamp(20px, 2.4vw, 28px);
       font-weight: 900;
@@ -265,7 +280,7 @@
       height: 20px;
       overflow: hidden;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(64, 26, 18, 0.1);
       border: 1px solid var(--border);
     }
 
@@ -273,7 +288,7 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, #a3b18a, #dad7cd, #588157);
+      background: linear-gradient(90deg, #401a12, #805640, #c7bbb1);
       transition: width 0.25s ease;
     }
 
@@ -282,7 +297,7 @@
       padding: clamp(24px, 4vw, 44px);
       border: 2px solid var(--border);
       border-radius: 30px;
-      background: linear-gradient(180deg, rgba(218, 215, 205, 0.13), rgba(163, 177, 138, 0.08));
+      background: linear-gradient(180deg, rgba(244, 242, 239, 0.76), rgba(199, 187, 177, 0.26));
     }
 
     .question-type {
@@ -331,19 +346,19 @@
     }
 
     .option-button.selected {
-      color: #fff;
-      border-color: var(--gold);
+      color: var(--surface-light);
+      border-color: var(--primary-dark);
       background: var(--primary-dark);
     }
 
     .option-button.correct {
-      color: var(--ink-dark);
+      color: var(--surface-light);
       border-color: var(--success);
       background: var(--success);
     }
 
     .option-button.wrong {
-      color: var(--ink-dark);
+      color: var(--surface-light);
       border-color: var(--danger);
       background: var(--danger);
     }
@@ -379,7 +394,7 @@
       padding: 22px;
       border-radius: 22px;
       color: var(--gold);
-      background: rgba(218, 215, 205, 0.16);
+      background: rgba(64, 26, 18, 0.08);
       border: 2px solid var(--border);
     }
 
@@ -395,7 +410,7 @@
       padding: 28px;
       border: 2px solid var(--border);
       border-radius: 28px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(244, 242, 239, 0.62);
       font-size: clamp(26px, 3.2vw, 42px);
       font-weight: 900;
     }
@@ -414,7 +429,7 @@
       padding: 18px;
       border: 2px solid var(--border);
       border-radius: 24px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(244, 242, 239, 0.62);
     }
 
     .answer-sheet h2 {
@@ -437,7 +452,7 @@
     .answer-sheet li {
       padding: 10px 12px;
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(244, 242, 239, 0.62);
       line-height: 1.45;
       font-size: 17px;
     }
@@ -491,7 +506,7 @@
       padding: 14px;
       border: 1px solid var(--border);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(244, 242, 239, 0.62);
     }
 
     .review-item.correct {
@@ -514,7 +529,7 @@
       border-radius: 999px;
       font-size: 14px;
       font-weight: 900;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(64, 26, 18, 0.1);
     }
 
     @media (hover: none) {
@@ -562,7 +577,7 @@
       .camp-title { font-size: clamp(22px, 7vw, 32px); }
       .home-subtitle { font-size: 16px; margin-bottom: 16px; }
       .greeting-card { margin-top: 16px; padding: 16px; border-radius: 18px; gap: 10px; }
-      .greeting-card p, .lead, .helper-text {
+      .greeting-card li, .lead, .helper-text {
         font-size: 16px;
       }
 
@@ -593,14 +608,16 @@
 <body>
   <main class="app">
     <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
-      <p class="camp-title">★ 2026 MK SUMMER CAMP</p>
+      <p class="camp-title">★ 대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선</p>
       <h1 id="mainTitle">콤케드 킹덤골든벨</h1>
-      <p class="home-subtitle">대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선</p>
+      <p class="home-subtitle">2026 KOMKED SUMMER MK CAMP</p>
       <div class="greeting-card" aria-label="골든벨 인사말">
-        <p>올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 제1회 킹덤골든벨이 진행됩니다.</p>
-        <p>이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 기출문제 100선입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</p>
+        <ol>
+          <li>올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 <em>제1회 킹덤골든벨</em>이 진행됩니다.</li>
+          <li>이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 <em>기출문제 100선</em>입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</li>
+          <li>한 화면에 한 문제씩 표시됩니다.</li>
+        </ol>
       </div>
-      <p class="lead">한 화면에 한 문제씩 표시됩니다. 문제는 시작할 때마다 무작위로 섞이고, 답을 확인하면 정답/오답 효과가 바로 나타납니다.</p>
 
       <div class="home-actions">
         <button id="startButton" class="button primary" type="button">퀴즈 시작</button>
@@ -903,7 +920,7 @@
 
     function launchConfetti() {
       clearConfetti();
-      const colors = ["#a3b18a", "#dad7cd", "#588157", "#3a5a40", "#344e41"];
+      const colors = ["#9b847b", "#dad7cd", "#805640", "#c7bbb1", "#401a12", "#b79c89"];
       for (let index = 0; index < 150; index += 1) {
         const piece = document.createElement("span");
         piece.className = "confetti-piece";
