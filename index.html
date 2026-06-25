@@ -110,6 +110,39 @@
       letter-spacing: -0.03em;
     }
 
+    .camp-title {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: clamp(24px, 4vw, 44px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .home-subtitle {
+      margin: -4px 0 24px;
+      color: var(--gold);
+      font-size: clamp(18px, 2.2vw, 26px);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .greeting-card {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(218, 215, 205, 0.1);
+    }
+
+    .greeting-card p {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.65;
+    }
+
     .lead, .setting-card p, .helper-text {
       color: var(--muted);
       font-size: clamp(17px, 2vw, 22px);
@@ -526,7 +559,10 @@
         font-size: clamp(25px, 8vw, 36px);
       }
 
-      .lead, .helper-text {
+      .camp-title { font-size: clamp(22px, 7vw, 32px); }
+      .home-subtitle { font-size: 16px; margin-bottom: 16px; }
+      .greeting-card { margin-top: 16px; padding: 16px; border-radius: 18px; gap: 10px; }
+      .greeting-card p, .lead, .helper-text {
         font-size: 16px;
       }
 
@@ -557,8 +593,13 @@
 <body>
   <main class="app">
     <section id="homeScreen" class="screen active" aria-labelledby="mainTitle">
-      <p class="eyebrow">대한민국 상식 · 문화 · 역사 · 언어</p>
-      <h1 id="mainTitle">골든벨 퀴즈</h1>
+      <p class="camp-title">★ 2026 MK SUMMER CAMP</p>
+      <h1 id="mainTitle">콤케드 킹덤골든벨</h1>
+      <p class="home-subtitle">대한민국의 상식, 문화, 역사, 지리, 우리말 기출문제 100선</p>
+      <div class="greeting-card" aria-label="골든벨 인사말">
+        <p>올해 캠프에서는 MK들이 한국인으로서의 뿌리의식, 국제 시민으로서의 자질, 그리고 하나님 나라 자녀로서의 정체성을 함께 세워가도록 제1회 킹덤골든벨이 진행됩니다.</p>
+        <p>이 자료는 킹덤골든벨을 준비하는 참가자들을 위한 기출문제 100선입니다. 퀴즈 속에는 한국의 문화, 역사, 지리, 우리말 이야기가 담겨 있습니다. 하나씩 만나가며 한국을 더 가깝고 재미있게 알아가 봅시다.</p>
+      </div>
       <p class="lead">한 화면에 한 문제씩 표시됩니다. 문제는 시작할 때마다 무작위로 섞이고, 답을 확인하면 정답/오답 효과가 바로 나타납니다.</p>
 
       <div class="home-actions">
